@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/models/login_model.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
@@ -30,6 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> globalFormKey= new GlobalKey<FormState>();
+
+  LoginRequestModel requestModel;
+
+  @override
+  void initState() {
+    super.initState();
+    requestModel = new LoginRequestModel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
         textEditingController: emailController,
         icon: Icons.email,
         hint: "Email ID",
+      onSaved: (input) => requestModel.email = input,
     );
 
   }
@@ -176,6 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
       icon: Icons.lock,
       obscureText: true,
       hint: "Password",
+      onSaved: (input) => requestModel.password = input,
     );
   }
 
@@ -212,6 +223,9 @@ class _LoginScreenState extends State<LoginScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
+        if(validateAndSave()) {
+          print(requestModel.toJson());
+        }
         print("Routing to your account");
         Scaffold
             .of(context)
@@ -262,5 +276,14 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  bool validateAndSave() {
+    final form = globalFormKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 }
