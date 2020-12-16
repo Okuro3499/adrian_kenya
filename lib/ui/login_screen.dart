@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.bottomCenter,
           margin: EdgeInsets.only(top: _large? _height/30 : (_medium? _height/25 : _height/20)),
           child: Image.asset(
-            'asset/logo-adrian.png',
+            'assets/logo-adrian.png',
             height: _height/3.5,
             width: _width/3.5,
           ),
