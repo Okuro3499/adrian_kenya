@@ -1,4 +1,5 @@
 import 'package:adrian_kenya/models/login_model.dart';
+import 'package:adrian_kenya/ui/home.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
@@ -221,16 +222,26 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget button() {
     return RaisedButton(
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0)
+      ),
       onPressed: () {
         if(validateAndSave()) {
           print(requestModel.toJson());
         }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return HomePage();
+            },
+          ),
+        );
         print("Routing to your account");
         Scaffold
             .of(context)
+            // ignore: deprecated_member_use
             .showSnackBar(SnackBar(content: Text('Login Successful')));
-
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -270,7 +281,8 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               "Sign up",
               style: TextStyle(
-                  fontWeight: FontWeight.w800, color: Colors.blue[900], fontSize: _large? 19: (_medium? 17: 15)),
+                  fontWeight: FontWeight.w800, color: Colors.blue[900], fontSize: _large? 19: (_medium? 17: 15)
+              ),
             ),
           )
         ],
