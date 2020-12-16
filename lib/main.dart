@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/ui/home.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/ui/signup.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         SIGN_IN: (BuildContext context) =>  LoginPage(),
         SIGN_UP: (BuildContext context) =>  SignUpScreen(),
+        HOME: (BuildContext context) =>  HomePage(),
       },
       initialRoute: SIGN_IN,
     );
