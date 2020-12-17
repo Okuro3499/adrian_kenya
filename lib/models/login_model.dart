@@ -1,29 +1,26 @@
-class LoginResponseModel {
-  final String token;
-  final String error;
+import 'dart:convert';
 
-  LoginResponseModel({this.token, this.error});
+LoginModel LoginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    return LoginResponseModel(token: json["token"] !=null ? json["token"]: "", error: json["error"] != null ? json["error"] : "");
-  }
-}
+String LoginModelToJson(LoginModel data) => json.encode(data.toJson());
 
-class LoginRequestModel {
-  String email;
-  String password;
-
-  LoginRequestModel({
+class LoginModel {
+  LoginModel({
     this.email,
-    this.password,
-});
+    this.token,
+  });
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> map = {
-      'email' : email,
-      'password' : password,
-    };
+  String email;
+  String token;
 
-    return map;
-  }
+
+  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
+    email: json["email"],
+    token: json["token"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "email": email,
+    "token": token,
+  };
 }

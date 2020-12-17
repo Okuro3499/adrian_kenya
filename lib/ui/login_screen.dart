@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/login_model.dart';
 import 'package:adrian_kenya/ui/home.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
@@ -29,17 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
+  LoginModel _user;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> globalFormKey= new GlobalKey<FormState>();
-
-  LoginRequestModel requestModel;
-
-  @override
-  void initState() {
-    super.initState();
-    requestModel = new LoginRequestModel();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget clipShape() {
-    //double height = MediaQuery.of(context).size.height;
     return Stack(
       children: <Widget>[
         Opacity(
@@ -157,12 +151,15 @@ class _LoginScreenState extends State<LoginScreen> {
           right: _width / 12.0,
           top: _height / 15.0),
       child: Form(
-        key: globalFormKey,
+        // key: globalFormKey,
         child: Column(
           children: <Widget>[
             emailTextFormField(),
             SizedBox(height: _height / 40.0),
             passwordTextFormField(),
+            SizedBox(height: _height / 60.0),
+            _user == null ? Container():
+            Text("The user ${_user.email}, ${_user.token} Login successful")
           ],
         ),
       ),
@@ -175,7 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
         textEditingController: emailController,
         icon: Icons.email,
         hint: "Email ID",
-      onSaved: (input) => requestModel.email = input,
     );
 
   }
@@ -187,7 +183,6 @@ class _LoginScreenState extends State<LoginScreen> {
       icon: Icons.lock,
       obscureText: true,
       hint: "Password",
-      onSaved: (input) => requestModel.password = input,
     );
   }
 
@@ -225,10 +220,18 @@ class _LoginScreenState extends State<LoginScreen> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0)
       ),
-      onPressed: () {
-        if(validateAndSave()) {
-          print(requestModel.toJson());
-        }
+      onPressed: () async{
+        final String email = emailController.text;
+        final String password = passwordController.text;
+
+        final LoginModel user = await loginUser(email, password);
+
+        setState(() {
+          _user = user;
+        });
+        // if(validateAndSave()) {
+        //   print(requestModel.toJson());
+        // }
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -288,14 +291,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
-  }
-
-  bool validateAndSave() {
-    final form = globalFormKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
   }
 }
