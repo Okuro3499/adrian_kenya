@@ -5,6 +5,7 @@ import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import 'home.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -136,6 +137,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
+        // if(validateAndSave()) {
+        //   print(requestModel.toJson());
+        // }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return HomePage();
+            },
+          ),
+        );
         print("Routing to your account");
       },
       textColor: Colors.white,
