@@ -1,6 +1,8 @@
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
+import 'form.dart';
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,16 @@ class _HomeState extends State<Home> {
   Widget button() {
     return FloatingActionButton(
       child: const Icon(Icons.add),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return FormPg();
+            },
+          ),
+        );
+      },
     );
   }
 }
