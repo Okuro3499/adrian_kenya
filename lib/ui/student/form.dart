@@ -2,8 +2,6 @@ import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class FormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

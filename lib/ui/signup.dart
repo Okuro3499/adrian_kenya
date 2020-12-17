@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import '../constants.dart';
-import 'home.dart';
+import 'student/home.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
