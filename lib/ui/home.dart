@@ -46,6 +46,8 @@ class _HomeState extends State<Home> {
               viewScholarshipCard(),
               SizedBox(height: _height / 25),
               myApplicationsCard(),
+              SizedBox(height: _height / 2.8),
+              button(),
             ],
           ),
         ),
@@ -89,6 +91,13 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget button() {
+    return FloatingActionButton(
+      child: const Icon(Icons.add),
+      onPressed: () {},
     );
   }
 }
