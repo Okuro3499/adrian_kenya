@@ -29,8 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> globalFormKey= new GlobalKey<FormState>();
 
   LoginRequestModel requestModel;

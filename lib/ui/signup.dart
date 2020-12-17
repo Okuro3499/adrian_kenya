@@ -1,8 +1,10 @@
+import 'package:adrian_kenya/models/SignUpModel.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/customappbar.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import '../constants.dart';
 import 'home.dart';
@@ -12,6 +14,23 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
+Future<SignUpModel> createUser(String email, String password, String username) async {
+  String apiUrl = "https://geoproserver.herokuapp.com/api/register/";
+
+  final response = await post(apiUrl, body: {
+    "email": email,
+    "password": password,
+    "username": username
+  });
+  if(response.statusCode == 201) {
+    final String responseString = response.body;
+
+    return SignUpModelFromJson(responseString);
+  } else{
+    return null;
+  }
+}
+
 class _SignUpScreenState extends State<SignUpScreen> {
   bool checkBoxValue = false;
   double _height;
@@ -19,6 +38,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
+  SignUpModel _user;
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +126,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             emailTextFormField(),
             SizedBox(height: _height / 60.0),
             passwordTextFormField(),
+            SizedBox(height: _height / 60.0),
+            _user == null ? Container():
+            Text("The user ${_user.username}, ${_user.email}, ${_user.token} is created successfully")
           ],
         ),
       ),
@@ -110,6 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget userNameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
+      textEditingController: usernameController,
       icon: Icons.person,
       hint: "Username",
     );
@@ -118,6 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget emailTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.emailAddress,
+      textEditingController: emailController,
       icon: Icons.email,
       hint: "Email ID",
     );
@@ -125,7 +155,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget passwordTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.visiblePassword,
+      textEditingController: passwordController,
       obscureText: true,
       icon: Icons.lock,
       hint: "Password",
@@ -136,10 +167,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () {
-        // if(validateAndSave()) {
-        //   print(requestModel.toJson());
-        // }
+      onPressed: () async{
+        final String username = usernameController.text;
+        final String email = emailController.text;
+        final String password = passwordController.text;
+
+        final SignUpModel user = await createUser(email, password, username);
+
+        setState(() {
+          _user = user;
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
