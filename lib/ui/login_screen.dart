@@ -1,6 +1,6 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/login_model.dart';
-import 'package:adrian_kenya/ui/home.dart';
+import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';

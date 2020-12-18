@@ -1,6 +1,8 @@
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
+import 'applied.dart';
+import 'availableScholarship.dart';
 import 'form.dart';
 
 class HomePage extends StatelessWidget {
@@ -62,7 +64,14 @@ class _HomeState extends State<Home> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card was tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return AvailableScholarship();
+              },
+            ),
+          );
         },
         child: Container(
           width: 300,
@@ -82,7 +91,14 @@ class _HomeState extends State<Home> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card was tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return AppliedPg();
+              },
+            ),
+          );
         },
         child: Container(
           width: 300,

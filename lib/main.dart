@@ -1,4 +1,4 @@
-import 'package:adrian_kenya/ui/home.dart';
+import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/ui/signup.dart';
 import 'package:flutter/material.dart';

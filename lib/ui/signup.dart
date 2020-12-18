@@ -7,7 +7,7 @@ import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import 'home.dart';
+import 'student/home.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
