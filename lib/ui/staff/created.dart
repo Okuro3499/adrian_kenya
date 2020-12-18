@@ -1,23 +1,23 @@
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
-class Application extends StatelessWidget {
+class Created extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(),
-      body: ApplicationsPg(),
+      body: CreatedPg(),
     );
   }
 }
 
-class ApplicationsPg extends StatefulWidget {
+class CreatedPg extends StatefulWidget {
   @override
-  _ApplicationsPgState createState() => _ApplicationsPgState();
+  _CreatedPgState createState() => _CreatedPgState();
 }
 
-class _ApplicationsPgState extends State<ApplicationsPg> {
+class _CreatedPgState extends State<CreatedPg> {
   double _height;
   double _width;
   double _pixelRatio;
@@ -53,5 +53,4 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
       ),
     );
   }
-
 }

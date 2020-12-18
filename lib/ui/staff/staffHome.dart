@@ -2,6 +2,9 @@ import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
 import '../student/availableScholarship.dart';
+import 'applications.dart';
+import 'approved.dart';
+import 'newScholarship.dart';
 
 
 class StaffHomePage extends StatelessWidget {
@@ -63,7 +66,14 @@ class _StaffHomePgState  extends State<StaffHomePg> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card was tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ApplicationsPg();
+              },
+            ),
+          );
         },
         child: Container(
           width: 300,
@@ -83,7 +93,14 @@ class _StaffHomePgState  extends State<StaffHomePg> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card was tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ApplicationsPg();
+              },
+            ),
+          );
         },
         child: Container(
           width: 300,
@@ -102,7 +119,14 @@ class _StaffHomePgState  extends State<StaffHomePg> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          print('Card was tapped');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ApprovedPg();
+                },
+            ),
+          );
         },
         child: Container(
           width: 300,
@@ -124,7 +148,7 @@ class _StaffHomePgState  extends State<StaffHomePg> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return AvailableScholarship();
+              return NewScholarshipPg();
             },
           ),
         );
