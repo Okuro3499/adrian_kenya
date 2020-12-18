@@ -11,7 +11,9 @@ class HomePage extends StatelessWidget {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-        
+        title: Text(
+            "Student Home"
+        ),
       ),
       body:Home(),
     );

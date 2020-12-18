@@ -168,10 +168,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget emailTextFormField() {
     return CustomTextField(
-        keyboardType: TextInputType.emailAddress,
-        textEditingController: emailController,
-        icon: Icons.email,
-        hint: "Email ID",
+      keyboardType: TextInputType.emailAddress,
+      textEditingController: emailController,
+      icon: Icons.email,
+      hint: "Email ID",
+
     );
 
   }
