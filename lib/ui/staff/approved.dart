@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +19,32 @@ class ApprovedPg extends StatefulWidget {
 }
 
 class _ApprovedPgState extends State<ApprovedPg> {
+
+  final scholarship = [
+    new ScholarshipListing(
+        scholarshipID: '1',
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        scholarshipTitle: 'UK Embassy Scholarship'
+    ),
+    new ScholarshipListing(
+        scholarshipID: '1',
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        scholarshipTitle: 'Adrian Foundation'
+    ),
+    new ScholarshipListing(
+        scholarshipID: '1',
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        scholarshipTitle: 'United Nations Program'
+    )
+  ];
+
+  String formatDateTime(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
+
   double _height;
   double _width;
   double _pixelRatio;
@@ -40,15 +67,18 @@ class _ApprovedPgState extends State<ApprovedPg> {
         child: ListView.separated(
           separatorBuilder: (_, __) => Divider(height: 1, color: Colors.black),
           itemBuilder: (_, index) {
-            return ListTile(
-              title: Text(
-                'Hello',
-                style: TextStyle(color: Theme.of(context).primaryColor),
+            return Dismissible(
+              key: ValueKey(scholarship[index].scholarshipID),
+              child: ListTile(
+                title: Text(
+                  scholarship[index].scholarshipTitle,
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                subtitle: Text('Deadline on ${formatDateTime(scholarship[index].createDateTime)}'),
               ),
-              subtitle: Text('Deadline on 30/12/2020'),
             );
           },
-          itemCount: 30,
+          itemCount: scholarship.length,
         ),
       ),
     );
