@@ -1,6 +1,8 @@
+import 'package:adrian_kenya/api/scholarship_service.dart';
 import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class Approved extends StatelessWidget {
   @override
@@ -19,30 +21,17 @@ class ApprovedPg extends StatefulWidget {
 }
 
 class _ApprovedPgState extends State<ApprovedPg> {
+  ScholarshipService get service => GetIt.I<ScholarshipService>();
 
-  final scholarship = [
-    new ScholarshipListing(
-        scholarshipID: '1',
-        createDateTime: DateTime.now(),
-        latestEditDateTime: DateTime.now(),
-        scholarshipTitle: 'UK Embassy Scholarship'
-    ),
-    new ScholarshipListing(
-        scholarshipID: '1',
-        createDateTime: DateTime.now(),
-        latestEditDateTime: DateTime.now(),
-        scholarshipTitle: 'Adrian Foundation'
-    ),
-    new ScholarshipListing(
-        scholarshipID: '1',
-        createDateTime: DateTime.now(),
-        latestEditDateTime: DateTime.now(),
-        scholarshipTitle: 'United Nations Program'
-    )
-  ];
-
+  List<ScholarshipListing>scholarship =[];
   String formatDateTime(DateTime dateTime) {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
+
+  @override
+  void initState() {
+    scholarship = service.getScholarshipList();
+    super.initState();
   }
 
   double _height;

@@ -4,10 +4,17 @@ import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/ui/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 
+import 'api/scholarship_service.dart';
 import 'constants.dart';
 
+void setupLocator() {
+  GetIt.I.registerLazySingleton(() => ScholarshipService());
+}
+
 void main() {
+  setupLocator();
   runApp(MyApp());
 }
 
