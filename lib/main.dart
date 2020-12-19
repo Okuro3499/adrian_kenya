@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/ui/staff/created.dart';
 import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/ui/signup.dart';
@@ -23,11 +24,12 @@ class MyApp extends StatelessWidget {
       title: "Adrian",
       theme: ThemeData(primaryColor: mPrimaryColor),
       routes: <String, WidgetBuilder>{
-        SIGN_IN: (BuildContext context) =>  LoginPage(),
-        SIGN_UP: (BuildContext context) =>  SignUpScreen(),
-        HOME: (BuildContext context) =>  HomePage(),
+        SIGN_IN: (BuildContext context) => LoginPage(),
+        SIGN_UP: (BuildContext context) => SignUpScreen(),
+        HOME: (BuildContext context) => HomePage(),
+        CREATE: (BuildContext context) =>CreatedPg()
       },
-      initialRoute: SIGN_IN,
+      initialRoute: CREATE,
     );
   }
 }

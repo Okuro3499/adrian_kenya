@@ -1,7 +1,9 @@
+import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
 class Created extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
@@ -18,6 +20,31 @@ class CreatedPg extends StatefulWidget {
 }
 
 class _CreatedPgState extends State<CreatedPg> {
+  final scholarship = [
+    new ScholarshipListing(
+        scholarshipID: '1',
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        scholarshipTitle: 'UK Embassy Scholarship'
+    ),
+    new ScholarshipListing(
+        scholarshipID: '1',
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        scholarshipTitle: 'Adrian Foundation'
+    ),
+    new ScholarshipListing(
+        scholarshipID: '1',
+        createDateTime: DateTime.now(),
+        latestEditDateTime: DateTime.now(),
+        scholarshipTitle: 'United Nations Program'
+    )
+  ];
+
+  String formatDateTime(DateTime dateTime) {
+    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+  }
+
   double _height;
   double _width;
   double _pixelRatio;
@@ -40,15 +67,40 @@ class _CreatedPgState extends State<CreatedPg> {
         child: ListView.separated(
           separatorBuilder: (_, __) => Divider(height: 1, color: Colors.black),
           itemBuilder: (_, index) {
-            return ListTile(
-              title: Text(
-                'Hello',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              subtitle: Text('Deadline on 30/12/2020'),
+            return Dismissible(
+              key: ValueKey(scholarship[index].scholarshipID),
+              // direction: DismissDirection.startToEnd,
+              // onDismissed: (direction) {
+              // },
+              // confirmDismiss: (direction) async {
+              //   final result = await showDialog(
+              //       context: context,
+              //       builder: (_) => ScholarshipDelete()
+              //   );
+              //   print (result);
+              //   return result;
+              // },
+              // background: Container(
+              //   color: Colors.red,
+              //   padding: EdgeInsets.only(left: 16),
+              //   child: Align(
+              //     child: Icon(
+              //         Icons.delete,
+              //         color: Colors.white
+              //     ),
+              //     alignment: Alignment.centerLeft,
+              //   ),
+              // ),
+              child: ListTile(
+                  title: Text(
+                    scholarship[index].scholarshipTitle,
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  subtitle: Text('Deadline on ${formatDateTime(scholarship[index].createDateTime)}'),
+                ),
             );
           },
-          itemCount: 30,
+          itemCount: scholarship.length,
         ),
       ),
     );
