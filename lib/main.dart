@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         HOME: (BuildContext context) => HomePage(),
         CREATE: (BuildContext context) =>CreatedPg()
       },
-      initialRoute: CREATE,
+      initialRoute: SIGN_IN,
     );
   }
 }

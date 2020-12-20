@@ -58,8 +58,8 @@ class _CreatedPgState extends State<CreatedPg> {
         child: ListView.separated(
           separatorBuilder: (_, __) => Divider(height: 1, color: Colors.black),
           itemBuilder: (_, index) {
-            return Dismissible(
-              key: ValueKey(scholarship[index].scholarshipID),
+            // return Dismissible(
+              // key: ValueKey(scholarship[index].scholarshipID),
               // direction: DismissDirection.startToEnd,
               // onDismissed: (direction) {
               // },
@@ -82,14 +82,14 @@ class _CreatedPgState extends State<CreatedPg> {
               //     alignment: Alignment.centerLeft,
               //   ),
               // ),
-              child: ListTile(
+              return ListTile(
                   title: Text(
                     scholarship[index].scholarshipTitle,
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   subtitle: Text('Deadline on ${formatDateTime(scholarship[index].createDateTime)}'),
-                ),
-            );
+                );
+            // );
           },
           itemCount: scholarship.length,
         ),
