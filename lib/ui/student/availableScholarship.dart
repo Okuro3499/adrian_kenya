@@ -1,9 +1,8 @@
-import 'package:adrian_kenya/api/Api_response.dart';
-import 'package:adrian_kenya/api/scholarship_service.dart';
 import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Available extends StatelessWidget {
   @override
@@ -25,31 +24,21 @@ class AvailableScholarship extends StatefulWidget {
 
 class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
-  ScholarshipService get service => GetIt.I<ScholarshipService>();
+  List<Sponsorships> _sponsorships = List<Sponsorships>();
 
-  APIResponse<List<ScholarshipListing>> _apiResponse;
-  bool _isLoading = false;
+  Future<List<Sponsorships>> fetchSponsorships() async {
+    var apiUrl = 'https://geoproserver.herokuapp.com/api/sponsorship';
+    var response = await http.get(apiUrl);
 
-  String formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
-  }
+    var sponsorships = List<Sponsorships>();
 
-  @override
-  void initState() {
-    _fetchScholarships();
-    super.initState();
-  }
-
-  _fetchScholarships() async{
-    setState(() {
-      _isLoading = true;
-    });
-
-    _apiResponse = await service.getScholarshipList();
-
-    setState(() {
-      _isLoading = false;
-    });
+    if(response.statusCode == 200) {
+      var sponsorshipsJson = json.decode(response.body);
+      for (var sponsorshipJson in sponsorshipsJson) {
+        sponsorships.add(Sponsorships.fromJson(sponsorshipJson));
+      }
+    }
+    return sponsorships;
   }
 
   double _height;
@@ -60,6 +49,12 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
   @override
   Widget build(BuildContext context) {
+    fetchSponsorships().then((value) {
+      setState(() {
+        _sponsorships.addAll(value);
+      });
+    });
+
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -71,21 +66,24 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
         height: _height,
         width: _width,
         padding: EdgeInsets.only(bottom: 2),
-        child: ListView.separated(
-          separatorBuilder: (_, __) => Divider(height: 1, color: Colors.black),
-          itemBuilder: (_, index) {
-            // return Dismissible(
-            //   key: ValueKey(scholarship[index].scholarshipID),
-              // child:
-                return ListTile(
-                title: Text(
-                  _apiResponse.data[index].name,
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-              // ),
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(_sponsorships[index].name,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text(_sponsorships[index].description,
+                            style: TextStyle(fontSize: 18))
+                      ],
+                    ),
+                  ),
             );
           },
-          itemCount: _apiResponse.data.length,
+          itemCount: _sponsorships.length,
         ),
       ),
     );

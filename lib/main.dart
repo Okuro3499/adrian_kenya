@@ -9,12 +9,9 @@ import 'package:get_it/get_it.dart';
 import 'api/scholarship_service.dart';
 import 'constants.dart';
 
-void setupLocator() {
-  GetIt.I.registerLazySingleton(() => ScholarshipService());
-}
+
 
 void main() {
-  setupLocator();
   runApp(MyApp());
 }
 
@@ -34,7 +31,7 @@ class MyApp extends StatelessWidget {
         SIGN_IN: (BuildContext context) => LoginPage(),
         SIGN_UP: (BuildContext context) => SignUpScreen(),
         HOME: (BuildContext context) => HomePage(),
-        CREATE: (BuildContext context) =>CreatedPg()
+        // CREATE: (BuildContext context) =>CreatedPg()
       },
       initialRoute: SIGN_IN,
     );

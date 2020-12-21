@@ -1,15 +1,17 @@
-class ScholarshipListing {
+class Sponsorships{
   String name;
   String description;
-  int pk;
 
-  ScholarshipListing(
-      {
-        this.name,
-        this.description,
-        this.pk,
-      }
+
+  Sponsorships(
+      this.name,
+      this.description,
   );
+
+  Sponsorships.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    description = json['description'];
+  }
 
   // void add(ScholarshipListing scholarship) {}
 }
