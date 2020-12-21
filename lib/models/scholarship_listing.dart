@@ -1,15 +1,15 @@
 class ScholarshipListing {
-  String scholarshipID;
-  String scholarshipTitle;
-  DateTime createDateTime;
-  DateTime latestEditDateTime;
+  String name;
+  String description;
+  int pk;
 
   ScholarshipListing(
       {
-        this.scholarshipID,
-        this.scholarshipTitle,
-        this.createDateTime,
-        this.latestEditDateTime
+        this.name,
+        this.description,
+        this.pk,
       }
-      );
+  );
+
+  // void add(ScholarshipListing scholarship) {}
 }

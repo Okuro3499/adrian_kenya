@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/api/Api_response.dart';
 import 'package:adrian_kenya/api/scholarship_service.dart';
 import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
@@ -9,7 +10,9 @@ class Applied extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(
+        'Applied Scholarships'
+      )),
       body: AppliedPg(),
     );
   }
@@ -24,7 +27,8 @@ class _AppliedPgState extends State<AppliedPg> {
 
   ScholarshipService get service => GetIt.I<ScholarshipService>();
 
-  List<ScholarshipListing>scholarship =[];
+  APIResponse<List<ScholarshipListing>> _apiResponse;
+  bool _isLoading = false;
 
   String formatDateTime(DateTime dateTime) {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
@@ -32,8 +36,20 @@ class _AppliedPgState extends State<AppliedPg> {
 
   @override
   void initState() {
-    scholarship = service.getScholarshipList();
+    _fetchScholarships();
     super.initState();
+  }
+
+  _fetchScholarships() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _apiResponse = await service.getScholarshipList();
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   double _height;
@@ -62,14 +78,13 @@ class _AppliedPgState extends State<AppliedPg> {
             //   key: ValueKey(scholarship[index].scholarshipID),
               return ListTile(
                 title: Text(
-                  scholarship[index].scholarshipTitle,
+                  _apiResponse.data[index].name,
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
-                subtitle: Text('Deadline on ${formatDateTime(scholarship[index].createDateTime)}'),
               // ),
             );
           },
-          itemCount: scholarship.length,
+          itemCount: _apiResponse.data.length,
         ),
       ),
     );
