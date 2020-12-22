@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
@@ -25,30 +27,28 @@ class AvailableScholarship extends StatefulWidget {
 
 class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
-  // List<Sponsorships> _sponsorships = List<Sponsorships>();
+  final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
+  List data;
 
-  Future<List<Sponsorships>> getSponsorships() async {
-    var data = await http.get('https://geoproserver.herokuapp.com/api/sponsorship');
-    var jsonData = json.decode(data.body);
-    // var apiUrl = 'https://geoproserver.herokuapp.com/api/sponsorship';
-    // var response = await http.get(apiUrl);
-    // var sponsorships = List<Sponsorships>();
-    // if(response.statusCode == 200) {
-    //   var sponsorshipJson = json.decode(response.body);
-    //   for (var sponsorshipJson in sponsorshipJson) {
-    //     sponsorships.add(Sponsorships.fromJson(sponsorshipJson));
-    //   }
-    // }
-    // return sponsorships;
-    List<Sponsorships> _sponsorship = [];
+  @override
+  void initState() {
+    super.initState();
+    this.getJsonData();
+  }
 
-    for (var u in jsonData) {
-      Sponsorships sponsorships = Sponsorships(u['name'], u['description']);
+  Future<String> getJsonData() async {
 
-     _sponsorship.add(sponsorships);
-    }
-    print(_sponsorship.length);
-    return _sponsorship;
+    var response = await http.get(
+        Uri.encodeFull(url),
+      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5MTQ3ODY0LCJpc19zdGFmZiI6ZmFsc2V9.k6ZzzSXb8pOSLJvYH-PDa8ndkTlWeb4-ARwH9590NP0"},
+    );
+    print(response.body);
+
+    setState(() {
+      var convertDataToJson = jsonDecode(response.body);
+      data = convertDataToJson['results'];
+    });
+    return "Success";
   }
 
   double _height;
@@ -75,25 +75,26 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
       child: Container(
         height: _height,
         width: _width,
-        padding: EdgeInsets.only(bottom: 2),
-        child: FutureBuilder(
-          future: getSponsorships(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data == null) {
-              return Container(
-                child: Text("Loading..."),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(snapshot.data[index].name),
-                  );
-                },
-              );
-            }
-          }
+
+        child: ListView.builder(
+          itemCount: data == null ? 0 : data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return new Container(
+              child: new Center(
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget> [
+                    new Card(
+                      child: new Container(
+                        child: new Text(data[index]['name']),
+                        padding: const EdgeInsets.all(20.0),
+                      ),
+                    )
+                  ]
+                ),
+              )
+            );
+          },
         ),
       ),
     );
