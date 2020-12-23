@@ -82,9 +82,9 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('title',
+                    Text(data[index]['name'],
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-                    Text('description',
+                    Text(data[index]['description'],
                       style: TextStyle(fontSize: 20),),
                   ],
                 ),
