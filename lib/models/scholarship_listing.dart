@@ -8,10 +8,10 @@ class Sponsorships{
       this.description,
   );
 
-  // Sponsorships.fromJson(Map<String, dynamic> json) {
-  //   name = json['name'];
-  //   description = json['description'];
-  // }
+  Sponsorships.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    description = json['description'];
+  }
 
   // void add(ScholarshipListing scholarship) {}
 }

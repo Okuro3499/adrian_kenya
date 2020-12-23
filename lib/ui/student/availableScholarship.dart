@@ -39,9 +39,12 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
   Future<String> getJsonData() async {
 
     var response = await http.get(
-        Uri.encodeFull(url),
+      Uri.encodeFull(url),
       headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5MTQ3ODY0LCJpc19zdGFmZiI6ZmFsc2V9.k6ZzzSXb8pOSLJvYH-PDa8ndkTlWeb4-ARwH9590NP0"},
     );
+    if (response.statusCode == 200){
+
+    }
     print(response.body);
 
     setState(() {
@@ -59,11 +62,6 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
   @override
   Widget build(BuildContext context) {
-    // fetchSponsorships().then((value) {
-    //   setState(() {
-    //     _sponsorships.addAll(value);
-    //   });
-    // });
 
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
@@ -77,24 +75,23 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
         width: _width,
 
         child: ListView.builder(
-          itemCount: data == null ? 0 : data.length,
-          itemBuilder: (BuildContext context, int index) {
-            return new Container(
-              child: new Center(
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget> [
-                    new Card(
-                      child: new Container(
-                        child: new Text(data[index]['name']),
-                        padding: const EdgeInsets.all(20.0),
-                      ),
-                    )
-                  ]
+          itemBuilder: (context, index) {
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.only (top: 50.0, bottom: 50.0, left: 25.0, right: 25.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('title',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                    Text('description',
+                      style: TextStyle(fontSize: 20),),
+                  ],
                 ),
-              )
+              ),
             );
           },
+          itemCount: 50,
         ),
       ),
     );
