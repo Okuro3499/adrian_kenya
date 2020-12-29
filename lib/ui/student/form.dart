@@ -1,3 +1,5 @@
+import 'package:adrian_kenya/api/api_service.dart';
+import 'package:adrian_kenya/models/apply_model.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +33,20 @@ class _FormPgState extends State<FormPg> {
   bool _large;
   bool _medium;
 
+  ApplyModel _apply;
+
   TextEditingController nameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController address2Controller = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
   TextEditingController schoolNameController = TextEditingController();
-  TextEditingController yearController = TextEditingController();
+  TextEditingController degreeController = TextEditingController();
+  TextEditingController cvController = TextEditingController();
   TextEditingController levelController = TextEditingController();
+  TextEditingController schoolAddressController = TextEditingController();
+  TextEditingController certificateController = TextEditingController();
+  TextEditingController idController = TextEditingController();
+
   GlobalKey<FormState> globalForm1Key = new GlobalKey<FormState>();
   GlobalKey<FormState> globalForm2Key = new GlobalKey<FormState>();
 
@@ -49,6 +57,7 @@ class _FormPgState extends State<FormPg> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+
     return Material(
       child: Container(
         height: _height,
@@ -101,15 +110,11 @@ class _FormPgState extends State<FormPg> {
           children: <Widget>[
             nameTextFormField(),
             SizedBox(height: _height / 40.0),
-            addressTextFormField(),
-            SizedBox(height: _height / 40.0),
             phoneTextFormField(),
             SizedBox(height: _height / 40.0),
-            emailTextFormField(),
+            countryTextFormField(),
             SizedBox(height: _height / 40.0),
-            certTextRow(),
-            SizedBox(height: _height / 40.0),
-            idTextRow(),
+            cityTextFormField(),
           ],
         ),
       ),
@@ -125,15 +130,6 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
-  Widget addressTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.streetAddress,
-      textEditingController: addressController,
-      icon: Icons.add_location_alt_outlined ,
-      hint: "address",
-    );
-  }
-
   Widget phoneTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.phone,
@@ -143,50 +139,24 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
-  Widget emailTextFormField() {
+  Widget countryTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
-      textEditingController: emailController,
-      icon: Icons.email ,
-      hint: "Email",
+      keyboardType: TextInputType.text,
+      textEditingController: countryController,
+      icon: Icons.add_location_alt_outlined ,
+      hint: "Country",
     );
   }
 
-  Widget certTextRow() {
-    return Container(
-      margin: EdgeInsets.only(left: _width / 15.0),
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.attach_file ),
-          Text(
-            "Upload birth certificate",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
-            ),
-          ),
-        ],
-      ),
+  Widget cityTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.text,
+      textEditingController: cityController,
+      icon: Icons.add_location_alt_outlined,
+      hint: "City",
     );
   }
 
-  Widget idTextRow() {
-    return Container(
-      margin: EdgeInsets.only(left: _width / 15.0),
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.attach_file ),
-          Text(
-            "Upload id photo",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget educationTextRow() {
     return Container(
@@ -217,15 +187,18 @@ class _FormPgState extends State<FormPg> {
           children: <Widget>[
             schoolTextFormField(),
             SizedBox(height: _height / 40.0),
-            address2TextFormField(),
-            SizedBox(height: _height / 40.0),
             levelTextFormField(),
             SizedBox(height: _height / 40.0),
-            yearTextFormField(),
+            degreeTextFormField(),
             SizedBox(height: _height / 40.0),
-            reasonTextRow(),
+            cvTextFormField(),
             SizedBox(height: _height / 40.0),
-            recommendationTextRow(),
+            schoolAddressTextFormField(),
+            SizedBox(height: _height / 40.0),
+            birthTextFormField(),
+            SizedBox(height: _height / 40.0),
+            idTextFormField(),
+
           ],
         ),
       ),
@@ -241,12 +214,21 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
-  Widget address2TextFormField() {
+  Widget degreeTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
-      textEditingController: addressController,
-      icon: Icons.add_location_alt_outlined ,
-      hint: "School address",
+      textEditingController: degreeController,
+      icon: Icons.school_outlined,
+      hint: "Degree",
+    );
+  }
+
+  Widget cvTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.text,
+      textEditingController: cvController,
+      icon: Icons.description,
+      hint: "Cover Letter",
     );
   }
 
@@ -259,48 +241,30 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
-  Widget yearTextFormField() {
+  Widget schoolAddressTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.streetAddress,
-      textEditingController: yearController,
-      icon: Icons.calendar_today_outlined,
-      hint: "Year of completion",
+      keyboardType: TextInputType.text,
+      textEditingController: schoolAddressController,
+      icon: Icons.add_location_alt_outlined ,
+      hint: "School address",
     );
   }
 
-  Widget reasonTextRow() {
-    return Container(
-      margin: EdgeInsets.only(left: _width / 15.0),
-      child: Column(
-        children: <Widget>[
-          Icon(Icons.attach_file ),
-          Text(
-            "Upload file giving reason why you deserve scholarship" ,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
-            ),
-          ),
-        ],
-      ),
+  Widget birthTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.text,
+      textEditingController: certificateController,
+      icon: Icons.local_hospital ,
+      hint: "Birth Certificate No.",
     );
   }
 
-  Widget recommendationTextRow() {
-    return Container(
-      margin: EdgeInsets.only(left: _width / 15.0),
-      child: Row(
-        children: <Widget>[
-          Icon(Icons.attach_file ),
-          Text(
-            "Upload recommendation letter",
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
-            ),
-          ),
-        ],
-      ),
+  Widget idTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.text,
+      textEditingController: idController,
+      icon: Icons.perm_identity ,
+      hint: "ID No.",
     );
   }
 
@@ -308,8 +272,24 @@ class _FormPgState extends State<FormPg> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () {
-        Navigator.of(context).pop();
+      onPressed: () async{
+        final String name = nameController.text;
+        final String mobile = phoneController.text;
+        final String country = countryController.text;
+        final String city = cityController.text;
+        final String schoolName = schoolNameController.text;
+        final String degree = degreeController.text;
+        final String coverLetter = cvController.text;
+        final String level = levelController.text;
+        final String schoolAddress = schoolAddressController.text;
+        final String certificate = certificateController.text;
+        final String id = idController.text;
+
+        final ApplyModel apply = await applyScholarship(name, mobile, country, city, schoolName, degree, coverLetter, level, schoolAddress, certificate, id);
+
+        setState(() {
+          _apply = apply;
+        });
         print("application successful");
       },
       textColor: Colors.white,
