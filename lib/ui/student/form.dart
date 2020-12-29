@@ -143,7 +143,7 @@ class _FormPgState extends State<FormPg> {
 
   Widget emailTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.streetAddress,
+      keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email ,
       hint: "Email",
