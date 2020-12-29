@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:adrian_kenya/models/SignUpModel.dart';
+import 'package:adrian_kenya/models/create_model.dart';
 import 'package:adrian_kenya/models/login_model.dart';
 import 'package:http/http.dart';
 
@@ -30,6 +33,22 @@ Future<LoginModel> loginUser(String email, String password) async {
     final String responseString = response.body;
 
     return LoginModelFromJson(responseString);
+  } else{
+    return null;
+  }
+}
+
+Future<CreateModel> createScholarship(String name, String description) async {
+  String apiUrl = "https://geoproserver.herokuapp.com/api/sponsorship/";
+
+  final response = await post(apiUrl, headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjA5NzY2NzU4LCJpc19zdGFmZiI6dHJ1ZX0.e8QzJ4R04LHIWlwd4Qm8AQ5JhSP87Ezxc1_aGDFVj-o"}, body: {
+    "name": name,
+    "description": description
+  });
+  if(response.statusCode == 201) {
+    final String responseString = response.body;
+
+    return createModelFromJson(responseString);
   } else{
     return null;
   }

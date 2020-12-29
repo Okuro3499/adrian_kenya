@@ -40,7 +40,6 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
   }
 
   Future<String> getJsonData() async {
-
     var response = await http.get(
       Uri.encodeFull(url),
       headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5NzYxNTQwLCJpc19zdGFmZiI6ZmFsc2V9.kmGhsCUdIvz81j7TWDp4tyUpOz5Z0tq5U1WSfgXewEo"},
