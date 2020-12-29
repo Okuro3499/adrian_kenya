@@ -21,7 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  http: any
+  get_it: ^5.0.3
+  http: ^0.12.2
   shared_preferences: any
   flutter:
     sdk: flutter

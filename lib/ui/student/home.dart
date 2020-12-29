@@ -11,7 +11,9 @@ class HomePage extends StatelessWidget {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-        
+        title: Text(
+            "Student Home"
+        ),
       ),
       body:Home(),
     );
@@ -91,14 +93,14 @@ class _HomeState extends State<Home> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return AppliedPg();
-              },
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) {
+          //       return AppliedPg();
+          //     },
+          //   ),
+          // );
         },
         child: Container(
           width: 300,

@@ -8,6 +8,9 @@ class FormPage extends StatelessWidget {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
+          title: Text(
+              "Form"
+          ),
       ),
       body: FormPg(
       ),
@@ -304,6 +307,7 @@ class _FormPgState extends State<FormPg> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
+        Navigator.of(context).pop();
         print("application successful");
       },
       textColor: Colors.white,

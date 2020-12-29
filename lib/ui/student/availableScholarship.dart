@@ -1,12 +1,20 @@
+import 'dart:io';
+
+import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 class Available extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(
+          "Scholarship"
+      )),
       body: AvailableScholarship(),
     );
   }
@@ -18,6 +26,34 @@ class AvailableScholarship extends StatefulWidget {
 }
 
 class _AvailableScholarshipState  extends State<AvailableScholarship> {
+
+  final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
+  List data;
+
+  @override
+  void initState() {
+    super.initState();
+    this.getJsonData();
+  }
+
+  Future<String> getJsonData() async {
+
+    var response = await http.get(
+      Uri.encodeFull(url),
+      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5NzYxNTQwLCJpc19zdGFmZiI6ZmFsc2V9.kmGhsCUdIvz81j7TWDp4tyUpOz5Z0tq5U1WSfgXewEo"},
+    );
+    // if (response.statusCode == 200){
+    //
+    // }
+    print(response.body);
+
+    setState(() {
+      var convertDataToJson = json.decode(response.body);
+      data = convertDataToJson;
+    });
+    return "Success";
+  }
+
   double _height;
   double _width;
   double _pixelRatio;
@@ -26,6 +62,7 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
   @override
   Widget build(BuildContext context) {
+
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -36,22 +73,31 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
       child: Container(
         height: _height,
         width: _width,
-        padding: EdgeInsets.only(bottom: 2),
-          child: ListView.separated(
-            separatorBuilder: (_, __) => Divider(height: 1, color: Colors.black),
-            itemBuilder: (_, index) {
-              return ListTile(
-                title: Text(
-                  'Hello',
-                  style: TextStyle(color: Theme.of(context).primaryColor),
+
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      // 'name',
+                      data[index]['name'],
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                    Text(
+                      // 'description',
+                      data[index]['description'],
+                      style: TextStyle(fontSize: 20),),
+                  ],
                 ),
-                subtitle: Text('Deadline on 30/12/2020'),
-              );
-            },
-            itemCount: 30,
-          ),
+              ),
+            );
+          },
+          itemCount: data.length,
+        ),
       ),
     );
   }
-
 }
