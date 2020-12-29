@@ -40,16 +40,16 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
     var response = await http.get(
       Uri.encodeFull(url),
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5MTQ3ODY0LCJpc19zdGFmZiI6ZmFsc2V9.k6ZzzSXb8pOSLJvYH-PDa8ndkTlWeb4-ARwH9590NP0"},
+      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5NzYxNTQwLCJpc19zdGFmZiI6ZmFsc2V9.kmGhsCUdIvz81j7TWDp4tyUpOz5Z0tq5U1WSfgXewEo"},
     );
-    if (response.statusCode == 200){
-
-    }
+    // if (response.statusCode == 200){
+    //
+    // }
     print(response.body);
 
     setState(() {
-      var convertDataToJson = jsonDecode(response.body);
-      data = convertDataToJson['results'];
+      var convertDataToJson = json.decode(response.body);
+      data = convertDataToJson;
     });
     return "Success";
   }
@@ -78,20 +78,24 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
           itemBuilder: (context, index) {
             return Card(
               child: Padding(
-                padding: const EdgeInsets.only (top: 50.0, bottom: 50.0, left: 25.0, right: 25.0),
+                padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(data[index]['name'],
+                    Text(
+                      // 'name',
+                      data[index]['name'],
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-                    Text(data[index]['description'],
+                    Text(
+                      // 'description',
+                      data[index]['description'],
                       style: TextStyle(fontSize: 20),),
                   ],
                 ),
               ),
             );
           },
-          itemCount: 50,
+          itemCount: data.length,
         ),
       ),
     );
