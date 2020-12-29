@@ -49,8 +49,6 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               SizedBox(height: _height / 25),
               viewScholarshipCard(),
-              SizedBox(height: _height / 25),
-              myApplicationsCard(),
               SizedBox(height: _height / 2.8),
               button(),
             ],
@@ -81,32 +79,6 @@ class _HomeState extends State<Home> {
               child: Text(
                   'View available Scholarships',
               ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget myApplicationsCard() {
-    return Card(
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) {
-          //       return AppliedPg();
-          //     },
-          //   ),
-          // );
-        },
-        child: Container(
-          width: 300,
-          height: 100,
-          child: Center(
-              child: Text(
-                  'My Scholarships')
           ),
         ),
       ),

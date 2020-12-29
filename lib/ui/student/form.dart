@@ -17,6 +17,7 @@ class FormPage extends StatelessWidget {
     );
   }
 }
+
 class FormPg extends StatefulWidget {
   @override
   _FormPgState createState() => _FormPgState();
@@ -29,6 +30,7 @@ class _FormPgState extends State<FormPg> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController address2Controller = TextEditingController();
