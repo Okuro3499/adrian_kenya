@@ -1,5 +1,6 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/login_model.dart';
+import 'package:adrian_kenya/ui/staff/staffHome.dart';
 import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
@@ -230,14 +231,12 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _user = user;
         });
-        // if(validateAndSave()) {
-        //   print(requestModel.toJson());
-        // }
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return HomePage();
+              // return HomePage();
+              return StaffHomePg();
             },
           ),
         );

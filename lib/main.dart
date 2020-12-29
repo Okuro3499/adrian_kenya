@@ -1,15 +1,15 @@
+import 'package:adrian_kenya/ui/staff/applications.dart';
 import 'package:adrian_kenya/ui/staff/created.dart';
+import 'package:adrian_kenya/ui/staff/newScholarship.dart';
+import 'package:adrian_kenya/ui/staff/staffHome.dart';
+import 'package:adrian_kenya/ui/student/availableScholarship.dart';
+import 'package:adrian_kenya/ui/student/form.dart';
 import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/ui/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
-
-import 'api/scholarship_service.dart';
 import 'constants.dart';
-
-
 
 void main() {
   runApp(MyApp());
@@ -30,8 +30,17 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         SIGN_IN: (BuildContext context) => LoginPage(),
         SIGN_UP: (BuildContext context) => SignUpScreen(),
+
+        //student
         HOME: (BuildContext context) => HomePage(),
-        // CREATE: (BuildContext context) =>CreatedPg()
+        FORM: (BuildContext context) => FormPg(),
+        AVAILABLE: (BuildContext context) => AvailableScholarship(),
+
+        //staff
+        STAFFHOME: (BuildContext context) => StaffHomePg(),
+        NEWSCHOLARSHIP: (BuildContext context) => NewScholarshipPg(),
+        APPLICATIONS: (BuildContext context) => ApplicationsPg(),
+        CREATED: (BuildContext context) =>CreatedPg()
       },
       initialRoute: SIGN_IN,
     );

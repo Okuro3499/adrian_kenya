@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:adrian_kenya/models/scholarship_listing.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,9 +11,11 @@ class Available extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
-      appBar: AppBar(title: Text(
-          "Scholarship"
-      )),
+      appBar: AppBar(
+          title: Text(
+              "Scholarship"
+          ),
+      ),
       body: AvailableScholarship(),
     );
   }
@@ -42,9 +43,7 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
       Uri.encodeFull(url),
       headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5NzYxNTQwLCJpc19zdGFmZiI6ZmFsc2V9.kmGhsCUdIvz81j7TWDp4tyUpOz5Z0tq5U1WSfgXewEo"},
     );
-    // if (response.statusCode == 200){
-    //
-    // }
+
     print(response.body);
 
     setState(() {

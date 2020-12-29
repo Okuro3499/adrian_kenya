@@ -1,7 +1,6 @@
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
-import 'applied.dart';
 import 'availableScholarship.dart';
 import 'form.dart';
 
