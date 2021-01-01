@@ -2,7 +2,6 @@ class Sponsorships{
   String name;
   String description;
 
-
   Sponsorships(
       this.name,
       this.description,
@@ -13,5 +12,4 @@ class Sponsorships{
     description = json['description'];
   }
 
-  // void add(ScholarshipListing scholarship) {}
 }

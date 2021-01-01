@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
+import 'form.dart';
+
 class Available extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,6 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
   }
 
   Future<String> getJsonData() async {
-
     var response = await http.get(
       Uri.encodeFull(url),
       headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5NzYxNTQwLCJpc19zdGFmZiI6ZmFsc2V9.kmGhsCUdIvz81j7TWDp4tyUpOz5Z0tq5U1WSfgXewEo"},
@@ -78,18 +79,26 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
             return Card(
               child: Padding(
                 padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    Navigator.push( context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return FormPg();
+                        },
+                      ),
+                    );
+                  },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      // 'name',
-                      data[index]['name'],
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-                    Text(
-                      // 'description',
-                      data[index]['description'],
-                      style: TextStyle(fontSize: 20),),
+                    Text( data[index]['name'],
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                    Text( data[index]['description'],
+                        style: TextStyle(fontSize: 20)),
                   ],
+                ),
                 ),
               ),
             );

@@ -13,7 +13,6 @@ class LoginModel {
   String email;
   String token;
 
-
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
     email: json["email"],
     token: json["token"],

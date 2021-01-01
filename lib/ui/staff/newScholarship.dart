@@ -1,6 +1,10 @@
+import 'package:adrian_kenya/api/api_service.dart';
+import 'package:adrian_kenya/models/create_model.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+
+import 'created.dart';
 
 class NewScholarship extends StatelessWidget {
   @override
@@ -24,8 +28,11 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
+  CreateModel _scholarship;
+
   TextEditingController scholarshipNameController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   GlobalKey<FormState> globalForm3Key = new GlobalKey<FormState>();
 
   @override
@@ -103,7 +110,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
   Widget descriptionTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
-      textEditingController: addressController,
+      textEditingController: descriptionController,
       icon: Icons.description_outlined,
       hint: "Scholarship Details",
     );
@@ -113,14 +120,30 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () {
-        print("application successful");
+      onPressed: () async{
+        final String name = scholarshipNameController.text;
+        final String description = descriptionController.text;
+
+        final CreateModel scholarship = await createScholarship(name, description);
+
+        setState(() {
+          _scholarship = scholarship;
+        });
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       // return HomePage();
+        //       return CreatedPg();
+        //     },
+        //   ),
+        // );
+        print("application created successful");
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-//        height: _height / 20,
         width:_large? _width/4 : (_medium? _width/3.75: _width/3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
