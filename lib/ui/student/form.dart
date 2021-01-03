@@ -4,6 +4,8 @@ import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
+import 'availableScholarship.dart';
+
 class FormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -290,7 +292,29 @@ class _FormPgState extends State<FormPg> {
         setState(() {
           _apply = apply;
         });
-        print("application successful");
+
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('SUCCESS'),
+              content: Text('Successfully applied for Scholarship'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AvailableScholarship();
+                        },
+                      ),
+                    );
+                  },
+                )
+              ],
+            )
+        );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -305,7 +329,12 @@ class _FormPgState extends State<FormPg> {
           ),
         ),
         padding: const EdgeInsets.all(12.0),
-        child: Text('APPLY', style: TextStyle(fontSize: _large? 14: (_medium? 12: 10)),),
+        child: Text(
+          'APPLY',
+          style: TextStyle(
+              fontSize: _large? 14: (_medium? 12: 10)
+          ),
+        ),
       ),
     );
   }

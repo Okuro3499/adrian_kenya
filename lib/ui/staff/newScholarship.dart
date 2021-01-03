@@ -11,7 +11,9 @@ class NewScholarship extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("New Scholarship"),
+      ),
       body: NewScholarshipPg(),
     );
   }
@@ -129,16 +131,22 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
         setState(() {
           _scholarship = scholarship;
         });
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) {
-        //       // return HomePage();
-        //       return CreatedPg();
-        //     },
-        //   ),
-        // );
-        print("application created successful");
+
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text('SUCCESS'),
+            content: Text('Scholarship was created successfully'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          )
+        );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
