@@ -49,6 +49,27 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
     });
+    // showDialog(
+    //     context: context,
+    //     builder: (_) => AlertDialog(
+    //       title: Text('Approve'),
+    //       content: Text('Kindly Accept or Decline application to proceed'),
+    //       actions: <Widget>[
+    //         FlatButton(
+    //           child: Text('Accept'),
+    //           onPressed: () {
+    //             Navigator.of(context).pop();
+    //           },
+    //         ),
+    //         FlatButton(
+    //           child: Text('Decline'),
+    //           onPressed: () {
+    //             Navigator.of(context).pop();
+    //           },
+    //         )
+    //       ],
+    //     )
+    // );
     return "Success";
   }
 

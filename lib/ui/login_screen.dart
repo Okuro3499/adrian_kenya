@@ -12,7 +12,7 @@ import '../constants.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    // Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
       body: LoginScreen(
       ),
@@ -235,8 +235,8 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return HomePage();
-              // return StaffHomePg();
+              // return HomePage();
+              return StaffHomePg();
             },
           ),
         );

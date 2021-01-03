@@ -11,7 +11,9 @@ class Created extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Created Scholarships"),
+      ),
       body: CreatedPg(),
     );
   }

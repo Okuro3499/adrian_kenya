@@ -49,8 +49,6 @@ class _HomeState extends State<Home> {
             children: <Widget>[
               SizedBox(height: _height / 25),
               viewScholarshipCard(),
-              SizedBox(height: _height / 2.8),
-              button(),
             ],
           ),
         ),
@@ -85,19 +83,4 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget button() {
-    return FloatingActionButton(
-      child: const Icon(Icons.add),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return FormPg();
-            },
-          ),
-        );
-      },
-    );
-  }
 }
