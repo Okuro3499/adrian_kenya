@@ -26,7 +26,7 @@ class CreatedPg extends StatefulWidget {
 
 class _CreatedPgState extends State<CreatedPg> {
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
-  List data;
+  List data =[];
 
   @override
   void initState() {

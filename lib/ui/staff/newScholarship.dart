@@ -141,7 +141,14 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
               FlatButton(
                 child: Text('Ok'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return CreatedPg();
+                      },
+                    ),
+                  );
                 },
               )
             ],

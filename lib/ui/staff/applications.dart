@@ -28,7 +28,7 @@ class ApplicationsPg extends StatefulWidget {
 class _ApplicationsPgState extends State<ApplicationsPg> {
 
   final String url = "https://geoproserver.herokuapp.com/api/applications";
-  List data;
+  List data = [];
 
   @override
   void initState() {

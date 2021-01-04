@@ -31,7 +31,8 @@ class AvailableScholarship extends StatefulWidget {
 class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
-  List data;
+  List data=[];
+  int _id;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
   Future<String> getJsonData() async {
     var response = await http.get(
       Uri.encodeFull(url),
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5NzYxNTQwLCJpc19zdGFmZiI6ZmFsc2V9.kmGhsCUdIvz81j7TWDp4tyUpOz5Z0tq5U1WSfgXewEo"},
+      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwMjgwMzM2LCJpc19zdGFmZiI6ZmFsc2V9.RHgS3WtLq9ZfIN7irpmTfNQ3LOufjlQBapccj41DxnY"},
     );
 
     print(response.body);
@@ -50,6 +51,7 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
+      // _id = index;
     });
     return "Success";
   }
