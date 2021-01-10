@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adrian_kenya/models/SignUpModel.dart';
@@ -33,7 +34,7 @@ Future<LoginModel> loginUser(String email, String password) async {
   if(response.statusCode == 201) {
     final String responseString = response.body;
 
-    return LoginModelFromJson(responseString);
+    return loginModelFromJson(responseString);
   } else{
     return null;
   }
@@ -55,22 +56,32 @@ Future<CreateModel> createScholarship(String name, String description) async {
   }
 }
 
-Future<ApplyModel> applyScholarship(String name, String mobile, String country, String city, String schoolName, String degree, String coverLetter, String level, String schoolAddress, String certificate, String id ) async {
+Future<ApplyModel> applyScholarship(String firstName, String lastName, String mobile, String country, String city, String schoolName, String degree, String coverLetter, String postalCode) async {
+  // String start, String to, , String birthCertificate, String nationalId
   String apiUrl = "https://geoproserver.herokuapp.com/api/apply/{sponsorship_id}/";
 
-  final response = await post(apiUrl, headers: {HttpHeaders.authorizationHeader: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5Nzc5ODY2LCJpc19zdGFmZiI6ZmFsc2V9._wV0kYuBz-pcr9v2hId9QaoS9ymE0Uq8QBuG9fMiRQ4"}, body: {
-    "first_name": name,
-    "mobile": mobile,
-    "country": country,
-    "city": city,
-    "school_name": schoolName,
-    "degree": degree,
-    "cover_letter": coverLetter,
-    "to": level,
-    "postal_code": schoolAddress,
-    "birth_certificate": certificate,
-    "national_id": id,
-  });
+  final response = await post(apiUrl, headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEwMzQwMjQzLCJpc19zdGFmZiI6dHJ1ZX0.pR9Pfzp4L1dRnYjuNEiQwG9iig9kiIo-vz2fjs2yfaw"},
+      body: {
+        //personal
+        "first_name": firstName,
+        "last_name": lastName,
+        "mobile": mobile,
+        "country": country,
+        "city": city,
+
+        //education
+        "school_name": schoolName,
+        "degree": degree,
+        "cover_letter": coverLetter,
+        // "start": start,
+        // "to": to,
+        "postal_code": postalCode,
+        // "birth_certificate": birthCertificate,
+        // "national_id": nationalId,
+        // "is_approved": false,
+        // "is_rejected": false
+
+      });
   if(response.statusCode == 201) {
     final String responseString = response.body;
 

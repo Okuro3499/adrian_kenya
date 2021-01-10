@@ -29,10 +29,8 @@ class AvailableScholarship extends StatefulWidget {
 }
 
 class _AvailableScholarshipState  extends State<AvailableScholarship> {
-
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
-  List data=[];
-  int _id;
+  List data = [];
 
   @override
   void initState() {
@@ -51,7 +49,6 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
-      // _id = index;
     });
     return "Success";
   }
@@ -77,34 +74,35 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
         width: _width,
 
         child: ListView.builder(
-          itemBuilder: (context, index) {
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    Navigator.push( context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return FormPg();
-                        },
-                      ),
-                    );
-                  },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text( data[index]['name'],
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                    Text( data[index]['description'],
-                        style: TextStyle(fontSize: 20)),
-                  ],
-                ),
+          itemBuilder: (context, int index) {
+            return GestureDetector(
+                onTap: () {
+                  setState(() {
+                  });
+                  Navigator.push( context,
+                    new MaterialPageRoute(
+                      builder: (context) => FormPg(),
+                    ),
+                  );
+                  print (data[index]);
+                },
+
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text( data[index]['name'],
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      Text( data[index]['description'],
+                          style: TextStyle(fontSize: 20)),
+                    ],
+                  ),
                 ),
               ),
             );
-          },
+            },
           itemCount: data.length,
         ),
       ),
