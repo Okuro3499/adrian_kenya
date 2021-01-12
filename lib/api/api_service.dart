@@ -33,7 +33,7 @@ Future<LoginModel> loginUser(String email, String password) async {
   if(response.statusCode == 201) {
     final String responseString = response.body;
 
-    return LoginModelFromJson(responseString);
+    return loginModelFromJson(responseString);
   } else{
     return null;
   }
@@ -55,22 +55,24 @@ Future<CreateModel> createScholarship(String name, String description) async {
   }
 }
 
-Future<ApplyModel> applyScholarship(String name, String mobile, String country, String city, String schoolName, String degree, String coverLetter, String level, String schoolAddress, String certificate, String id ) async {
-  String apiUrl = "https://geoproserver.herokuapp.com/api/apply/{sponsorship_id}/";
+Future<ApplyModel> applyScholarship(String first_name, String last_name, String mobile, String country, String city, String school_name, String degree, String cover_letter, String postal_code) async {
+  String apiUrl = "https://geoproserver.herokuapp.com/api/apply/{scholarship_id}/";
 
-  final response = await post(apiUrl, headers: {HttpHeaders.authorizationHeader: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjA5Nzc5ODY2LCJpc19zdGFmZiI6ZmFsc2V9._wV0kYuBz-pcr9v2hId9QaoS9ymE0Uq8QBuG9fMiRQ4"}, body: {
-    "first_name": name,
-    "mobile": mobile,
-    "country": country,
-    "city": city,
-    "school_name": schoolName,
-    "degree": degree,
-    "cover_letter": coverLetter,
-    "to": level,
-    "postal_code": schoolAddress,
-    "birth_certificate": certificate,
-    "national_id": id,
-  });
+  final response = await post(apiUrl, headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODc5MDI3LCJpc19zdGFmZiI6ZmFsc2V9.VuR726oQkuMj3a_JH8G3KuRumfCguZioqdkpsF_1PK4"},
+      body: {
+        //personal
+        "first_name": first_name,
+        "last_name": last_name,
+        "mobile": mobile,
+        "country": country,
+        "city": city,
+
+        //education
+        "school_name": school_name,
+        "degree": degree,
+        "cover_letter": cover_letter,
+        "postal_code": postal_code,
+      });
   if(response.statusCode == 201) {
     final String responseString = response.body;
 

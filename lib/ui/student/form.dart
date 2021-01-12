@@ -9,25 +9,29 @@ import 'availableScholarship.dart';
 class FormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context)
+        .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              "Form"
-          ),
+        title: Text("Form"),
       ),
-      body: FormPg(
-      ),
+      body: FormPg(),
     );
   }
 }
 
 class FormPg extends StatefulWidget {
+  int scholarship_id;
+  FormPg({
+    Key key,
+    this.scholarship_id,
+  }) : super(key: key);
   @override
   _FormPgState createState() => _FormPgState();
 }
 
 class _FormPgState extends State<FormPg> {
+  int scholarship_id;
 
   double _height;
   double _width;
@@ -37,28 +41,31 @@ class _FormPgState extends State<FormPg> {
 
   ApplyModel _apply;
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController schoolNameController = TextEditingController();
   TextEditingController degreeController = TextEditingController();
-  TextEditingController cvController = TextEditingController();
-  TextEditingController levelController = TextEditingController();
-  TextEditingController schoolAddressController = TextEditingController();
-  TextEditingController certificateController = TextEditingController();
-  TextEditingController idController = TextEditingController();
+  TextEditingController coverLetterController = TextEditingController();
+  TextEditingController postalCodeController = TextEditingController();
 
   GlobalKey<FormState> globalForm1Key = new GlobalKey<FormState>();
   GlobalKey<FormState> globalForm2Key = new GlobalKey<FormState>();
+
+  void initState() {
+    super.initState();
+    scholarship_id = widget.scholarship_id;
+  }
 
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
       child: Container(
@@ -92,7 +99,7 @@ class _FormPgState extends State<FormPg> {
             "Personal Information",
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
+              fontSize: _large ? 20 : (_medium ? 17.5 : 15),
             ),
           ),
         ],
@@ -100,19 +107,20 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
+  //personal
   Widget personalForm() {
     return Container(
       margin: EdgeInsets.only(
-          left: _width / 12.0,
-          right: _width / 12.0,
-          top: _height / 15.0),
+          left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
         key: globalForm1Key,
         child: Column(
           children: <Widget>[
-            nameTextFormField(),
+            firstNameTextFormField(),
             SizedBox(height: _height / 40.0),
-            phoneTextFormField(),
+            lastNameTextFormField(),
+            SizedBox(height: _height / 40.0),
+            mobileTextFormField(),
             SizedBox(height: _height / 40.0),
             countryTextFormField(),
             SizedBox(height: _height / 40.0),
@@ -123,19 +131,28 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
-  Widget nameTextFormField() {
+  Widget firstNameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.name,
-      textEditingController: nameController,
+      textEditingController: firstNameController,
       icon: Icons.person,
-      hint: "Name",
+      hint: "First Name",
     );
   }
 
-  Widget phoneTextFormField() {
+  Widget lastNameTextFormField() {
+    return CustomTextField(
+      keyboardType: TextInputType.name,
+      textEditingController: lastNameController,
+      icon: Icons.person,
+      hint: "Last Name",
+    );
+  }
+
+  Widget mobileTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.phone,
-      textEditingController: phoneController,
+      textEditingController: mobileController,
       icon: Icons.phone,
       hint: "Phone number",
     );
@@ -145,7 +162,7 @@ class _FormPgState extends State<FormPg> {
     return CustomTextField(
       keyboardType: TextInputType.text,
       textEditingController: countryController,
-      icon: Icons.add_location_alt_outlined ,
+      icon: Icons.add_location_alt_outlined,
       hint: "Country",
     );
   }
@@ -159,7 +176,7 @@ class _FormPgState extends State<FormPg> {
     );
   }
 
-
+  //education
   Widget educationTextRow() {
     return Container(
       margin: EdgeInsets.only(left: _width / 15.0),
@@ -169,7 +186,7 @@ class _FormPgState extends State<FormPg> {
             "Education Information",
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
+              fontSize: _large ? 20 : (_medium ? 17.5 : 15),
             ),
           ),
         ],
@@ -180,38 +197,30 @@ class _FormPgState extends State<FormPg> {
   Widget educationForm() {
     return Container(
       margin: EdgeInsets.only(
-          left: _width / 12.0,
-          right: _width / 12.0,
-          top: _height / 15.0),
+          left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
         key: globalForm2Key,
         child: Column(
           children: <Widget>[
-            schoolTextFormField(),
-            SizedBox(height: _height / 40.0),
-            levelTextFormField(),
+            schoolNameTextFormField(),
             SizedBox(height: _height / 40.0),
             degreeTextFormField(),
             SizedBox(height: _height / 40.0),
             cvTextFormField(),
             SizedBox(height: _height / 40.0),
-            schoolAddressTextFormField(),
+            postalCodeTextFormField(),
             SizedBox(height: _height / 40.0),
-            birthTextFormField(),
-            SizedBox(height: _height / 40.0),
-            idTextFormField(),
-
           ],
         ),
       ),
     );
   }
 
-  Widget schoolTextFormField() {
+  Widget schoolNameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.name,
       textEditingController: schoolNameController,
-      icon: Icons.school_outlined ,
+      icon: Icons.school_outlined,
       hint: "Name of School",
     );
   }
@@ -228,45 +237,18 @@ class _FormPgState extends State<FormPg> {
   Widget cvTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
-      textEditingController: cvController,
+      textEditingController: coverLetterController,
       icon: Icons.description,
       hint: "Cover Letter",
     );
   }
 
-  Widget levelTextFormField() {
+  Widget postalCodeTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
-      textEditingController: levelController,
-      icon: Icons.bar_chart_outlined ,
-      hint: "Level of Education",
-    );
-  }
-
-  Widget schoolAddressTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: schoolAddressController,
-      icon: Icons.add_location_alt_outlined ,
+      textEditingController: postalCodeController,
+      icon: Icons.add_location_alt_outlined,
       hint: "School address",
-    );
-  }
-
-  Widget birthTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: certificateController,
-      icon: Icons.local_hospital ,
-      hint: "Birth Certificate No.",
-    );
-  }
-
-  Widget idTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: idController,
-      icon: Icons.perm_identity ,
-      hint: "ID No.",
     );
   }
 
@@ -274,54 +256,53 @@ class _FormPgState extends State<FormPg> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () async{
-        final String name = nameController.text;
-        final String mobile = phoneController.text;
+      onPressed: () async {
+        final String first_name = firstNameController.text;
+        final String last_name = lastNameController.text;
+        final String mobile = mobileController.text;
         final String country = countryController.text;
         final String city = cityController.text;
-        final String schoolName = schoolNameController.text;
+        final String school_name = schoolNameController.text;
         final String degree = degreeController.text;
-        final String coverLetter = cvController.text;
-        final String level = levelController.text;
-        final String schoolAddress = schoolAddressController.text;
-        final String certificate = certificateController.text;
-        final String id = idController.text;
+        final String cover_letter = coverLetterController.text;
+        final String postal_code = postalCodeController.text;
 
-        final ApplyModel apply = await applyScholarship(name, mobile, country, city, schoolName, degree, coverLetter, level, schoolAddress, certificate, id);
+        final ApplyModel apply = await applyScholarship(first_name, last_name,
+            mobile, country, city, school_name, degree, cover_letter, postal_code);
 
         setState(() {
           _apply = apply;
         });
 
+        print(widget.scholarship_id);
         showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text('SUCCESS'),
-              content: Text('Successfully applied for Scholarship'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return AvailableScholarship();
-                        },
-                      ),
-                    );
-                  },
-                )
-              ],
-            )
+          context: context,
+          builder: (_) => AlertDialog(
+            title: Text('SUCCESS'),
+            content: Text('Successfully applied for Scholarship'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return AvailableScholarship();
+                      },
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
         );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-//        height: _height / 20,
-        width:_large? _width/4 : (_medium? _width/3.75: _width/3.5),
+        width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           gradient: LinearGradient(
@@ -331,12 +312,9 @@ class _FormPgState extends State<FormPg> {
         padding: const EdgeInsets.all(12.0),
         child: Text(
           'APPLY',
-          style: TextStyle(
-              fontSize: _large? 14: (_medium? 12: 10)
-          ),
+          style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
         ),
       ),
     );
   }
-
 }

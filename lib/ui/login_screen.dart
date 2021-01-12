@@ -12,10 +12,9 @@ import '../constants.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
     return Scaffold(
-      body: LoginScreen(
-      ),
+      body: LoginScreen(),
     );
   }
 }
@@ -34,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   LoginModel _user;
 
-  final TextEditingController emailController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -173,7 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
       textEditingController: emailController,
       icon: Icons.email,
       hint: "Email ID",
-
     );
 
   }
@@ -231,20 +229,22 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _user = user;
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return HomePage();
-              // return StaffHomePg();
-            },
-          ),
-        );
-        print("Routing to your account");
-        Scaffold
-            .of(context)
-            // ignore: deprecated_member_use
-            .showSnackBar(SnackBar(content: Text('Login Successful')));
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                  // return StaffHomePg();
+                  return HomePage();
+                }
+            ),
+          );
+
+          print("Routing to your account");
+          Scaffold
+              .of(context)
+          // ignore: deprecated_member_use
+              .showSnackBar(SnackBar(content: Text('Login Successful')));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

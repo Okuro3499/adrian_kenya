@@ -6,56 +6,48 @@ String applyModelToJson(ApplyModel data) => json.encode(data.toJson());
 
 class ApplyModel{
   ApplyModel({
-    this.name,
+    this.first_name,
+    this.last_name,
     this.mobile,
     this.country,
     this.city,
-    this.schoolName,
+    this.school_name,
     this.degree,
-    this.coverLetter,
-    this.level,
-    this.schoolAddress,
-    this.certificate,
-    this.id,
+    this.cover_letter,
+    this.postal_code
   });
 
-  String name;
+  String first_name;
+  String last_name;
   String mobile;
   String country;
   String city;
-  String schoolName;
+  String school_name;
   String degree;
-  String coverLetter;
-  String level;
-  String schoolAddress;
-  String certificate;
-  String id;
+  String cover_letter;
+  String postal_code;
 
   factory ApplyModel.fromJson(Map<String, dynamic> json) => ApplyModel(
-    name: json["first_name"],
+    first_name: json["first_name"],
+    last_name: json["last_name"],
     mobile: json["mobile"],
     country: json["country"],
     city: json["city"],
-    schoolName: json["school_name"],
+    school_name: json["school_name"],
     degree: json["degree"],
-    coverLetter: json["cover_letter"],
-    level: json["to"],
-    schoolAddress: json["postal_code"],
-    certificate: json["birth_certificate"],
-    id: json["national_id"],
+    cover_letter: json["cover_letter"],
+    postal_code: json["postal_code"],
   );
 
   Map<String, dynamic> toJson() => {
-    "first_name": name,
+    "first_name": first_name,
+    "last_name": last_name,
     "mobile": mobile,
     "country": country,
     "city": city,
-    "school_name": schoolName,
+    "school_name": school_name,
     "degree": degree,
-    "cover_letter": coverLetter,
-    "to": level,
-    "postal_code": schoolAddress,
-    "birth_certificate": certificate,
-    "national_id": id,
+    "cover_letter": cover_letter,
+    "postal_code": postal_code,
   };
 }

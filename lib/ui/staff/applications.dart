@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/ui/staff/created.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
@@ -40,8 +41,7 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
 
     var response = await http.get(
       Uri.encodeFull(url),
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjA5NzY2NzU4LCJpc19zdGFmZiI6dHJ1ZX0.e8QzJ4R04LHIWlwd4Qm8AQ5JhSP87Ezxc1_aGDFVj-o"},
-    );
+      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODc5MDI3LCJpc19zdGFmZiI6ZmFsc2V9.VuR726oQkuMj3a_JH8G3KuRumfCguZioqdkpsF_1PK4"});
 
     print(response.body);
 
@@ -49,27 +49,6 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
     });
-    // showDialog(
-    //     context: context,
-    //     builder: (_) => AlertDialog(
-    //       title: Text('Approve'),
-    //       content: Text('Kindly Accept or Decline application to proceed'),
-    //       actions: <Widget>[
-    //         FlatButton(
-    //           child: Text('Accept'),
-    //           onPressed: () {
-    //             Navigator.of(context).pop();
-    //           },
-    //         ),
-    //         FlatButton(
-    //           child: Text('Decline'),
-    //           onPressed: () {
-    //             Navigator.of(context).pop();
-    //           },
-    //         )
-    //       ],
-    //     )
-    // );
     return "Success";
   }
 
@@ -93,41 +72,83 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
         width: _width,
         child: ListView.builder(
           itemBuilder: (context, index) {
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(data[index]['student'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['mobile'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['country'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['city'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['school_name'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['degree'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['cover_letter'],
-                        style: TextStyle(fontSize: 15)),
-                    // Text(data[index]['start'],
-                    //     style: TextStyle(fontSize: 15)),
-                    // Text(data[index]['to'],
-                    //     style: TextStyle(fontSize: 15)),
-                    Text(data[index]['postal_code'],
-                        style: TextStyle(fontSize: 15)),
-                    // Text(data[index]['birth_certificate'],
-                    //     style: TextStyle(fontSize: 15,)),
-                    Text(data[index]['national_id'],
-                        style: TextStyle(fontSize: 15)),
-                    Text(data[index]['email'],
-                        style: TextStyle(fontSize: 15,)),
-                    Text(data[index]['sponsorship_name'],
-                        style: TextStyle(fontSize: 15)),
-                  ],
+
+            return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: Text('Approve'),
+                          content: Text('Kindly Accept or Decline application to proceed'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Accept'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CreatedPg();
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('Decline'),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return CreatedPg();
+                                    },
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        )
+                    );
+                  });
+                },
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(data[index]['student'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['mobile'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['country'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['city'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['school_name'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['degree'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['cover_letter'],
+                          style: TextStyle(fontSize: 15)),
+                      // Text(data[index]['start'],
+                      //     style: TextStyle(fontSize: 15)),
+                      // Text(data[index]['to'],
+                      //     style: TextStyle(fontSize: 15)),
+                      Text(data[index]['postal_code'],
+                          style: TextStyle(fontSize: 15)),
+                      // Text(data[index]['birth_certificate'],
+                      //     style: TextStyle(fontSize: 15,)),
+                      Text(data[index]['national_id'],
+                          style: TextStyle(fontSize: 15)),
+                      Text(data[index]['email'],
+                          style: TextStyle(fontSize: 15,)),
+                      Text(data[index]['sponsorship_name'],
+                          style: TextStyle(fontSize: 15)),
+                    ],
+                  ),
                 ),
               ),
             );

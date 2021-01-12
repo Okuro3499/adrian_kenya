@@ -11,12 +11,11 @@ import 'form.dart';
 class Available extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context)
+        .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              "Scholarship"
-          ),
+        title: Text("Scholarship"),
       ),
       body: AvailableScholarship(),
     );
@@ -24,15 +23,14 @@ class Available extends StatelessWidget {
 }
 
 class AvailableScholarship extends StatefulWidget {
+
   @override
   _AvailableScholarshipState createState() => _AvailableScholarshipState();
 }
 
-class _AvailableScholarshipState  extends State<AvailableScholarship> {
-
+class _AvailableScholarshipState extends State<AvailableScholarship> {
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
-  List data=[];
-  int _id;
+  List data = [];
 
   @override
   void initState() {
@@ -43,7 +41,10 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
   Future<String> getJsonData() async {
     var response = await http.get(
       Uri.encodeFull(url),
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwMjgwMzM2LCJpc19zdGFmZiI6ZmFsc2V9.RHgS3WtLq9ZfIN7irpmTfNQ3LOufjlQBapccj41DxnY"},
+      headers: {
+        HttpHeaders.authorizationHeader:
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODY3MzE1LCJpc19zdGFmZiI6ZmFsc2V9.bdgFjibBo0VamSLBPGvPXzzhvFOQ3KCA5sUG0HVhP_k"
+      },
     );
 
     print(response.body);
@@ -51,7 +52,6 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
-      // _id = index;
     });
     return "Success";
   }
@@ -64,43 +64,42 @@ class _AvailableScholarshipState  extends State<AvailableScholarship> {
 
   @override
   Widget build(BuildContext context) {
-
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
       child: Container(
         height: _height,
         width: _width,
-
         child: ListView.builder(
-          itemBuilder: (context, index) {
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    Navigator.push( context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return FormPg();
-                        },
-                      ),
-                    );
-                  },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text( data[index]['name'],
-                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                    Text( data[index]['description'],
-                        style: TextStyle(fontSize: 20)),
-                  ],
-                ),
+          itemBuilder: (context, int index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {});
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => FormPg(scholarship_id: data[index]['pk'])),
+                );
+                print(data[index]['pk']);
+              },
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(data[index]['name'],
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold)),
+                      Text(data[index]['description'],
+                          style: TextStyle(fontSize: 20)),
+                    ],
+                  ),
                 ),
               ),
             );
