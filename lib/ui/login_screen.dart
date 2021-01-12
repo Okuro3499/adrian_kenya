@@ -172,7 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
       textEditingController: emailController,
       icon: Icons.email,
       hint: "Email ID",
-
     );
 
   }
@@ -230,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _user = user;
         });
-        if (user != null) {
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -240,12 +239,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
             ),
           );
+
           print("Routing to your account");
           Scaffold
               .of(context)
           // ignore: deprecated_member_use
               .showSnackBar(SnackBar(content: Text('Login Successful')));
-        }
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
