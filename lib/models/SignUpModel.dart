@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-SignUpModel SignUpModelFromJson(String str) => SignUpModel.fromJson(json.decode(str));
+SignUpModel SignUpModelFromJson(String str) =>
+    SignUpModel.fromJson(json.decode(str));
 
 String SignUpModelToJson(SignUpModel data) => json.encode(data.toJson());
 
@@ -16,14 +17,14 @@ class SignUpModel {
   String username;
 
   factory SignUpModel.fromJson(Map<String, dynamic> json) => SignUpModel(
-    email: json["email"],
-    token: json["token"],
-    username: json["username"],
-  );
+        email: json["email"],
+        token: json["token"],
+        username: json["username"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "email": email,
-    "token": token,
-    "username": username,
-  };
+        "email": email,
+        "token": token,
+        "username": username,
+      };
 }

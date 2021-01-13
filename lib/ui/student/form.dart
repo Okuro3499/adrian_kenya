@@ -267,7 +267,7 @@ class _FormPgState extends State<FormPg> {
         final String cover_letter = coverLetterController.text;
         final String postal_code = postalCodeController.text;
 
-        final ApplyModel apply = await applyScholarship(first_name, last_name,
+        final ApplyModel apply = await applyScholarship(widget.scholarship_id, first_name, last_name,
             mobile, country, city, school_name, degree, cover_letter, postal_code);
 
         setState(() {

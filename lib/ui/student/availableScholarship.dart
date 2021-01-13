@@ -23,7 +23,6 @@ class Available extends StatelessWidget {
 }
 
 class AvailableScholarship extends StatefulWidget {
-
   @override
   _AvailableScholarshipState createState() => _AvailableScholarshipState();
 }
@@ -43,7 +42,7 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       Uri.encodeFull(url),
       headers: {
         HttpHeaders.authorizationHeader:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODY3MzE1LCJpc19zdGFmZiI6ZmFsc2V9.bdgFjibBo0VamSLBPGvPXzzhvFOQ3KCA5sUG0HVhP_k"
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODY3MzE1LCJpc19zdGFmZiI6ZmFsc2V9.bdgFjibBo0VamSLBPGvPXzzhvFOQ3KCA5sUG0HVhP_k"
       },
     );
 
@@ -82,7 +81,8 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
                 Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => FormPg(scholarship_id: data[index]['pk'])),
+                      builder: (context) =>
+                          FormPg(scholarship_id: data[index]['pk'])),
                 );
                 print(data[index]['pk']);
               },
