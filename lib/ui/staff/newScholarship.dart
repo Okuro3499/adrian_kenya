@@ -9,7 +9,8 @@ import 'created.dart';
 class NewScholarship extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context)
+        .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
         title: Text("New Scholarship"),
@@ -18,13 +19,13 @@ class NewScholarship extends StatelessWidget {
     );
   }
 }
+
 class NewScholarshipPg extends StatefulWidget {
   @override
   _NewScholarshipPgState createState() => _NewScholarshipPgState();
 }
 
 class _NewScholarshipPgState extends State<NewScholarshipPg> {
-
   double _height;
   double _width;
   double _pixelRatio;
@@ -42,8 +43,8 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
     return Material(
       child: Container(
         height: _height,
@@ -73,7 +74,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
             "Create new Scholarship",
             style: TextStyle(
               fontWeight: FontWeight.w700,
-              fontSize: _large? 20 : (_medium? 17.5 : 15),
+              fontSize: _large ? 20 : (_medium ? 17.5 : 15),
             ),
           ),
         ],
@@ -84,9 +85,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
   Widget applicationForm() {
     return Container(
       margin: EdgeInsets.only(
-          left: _width / 12.0,
-          right: _width / 12.0,
-          top: _height / 15.0),
+          left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
         key: globalForm3Key,
         child: Column(
@@ -100,7 +99,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
     );
   }
 
-  Widget scholarshipNameTextFormField(){
+  Widget scholarshipNameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.name,
       textEditingController: scholarshipNameController,
@@ -122,44 +121,44 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () async{
+      onPressed: () async {
         final String name = scholarshipNameController.text;
         final String description = descriptionController.text;
 
-        final CreateModel scholarship = await createScholarship(name, description);
+        final CreateModel scholarship =
+            await createScholarship(name, description);
 
         setState(() {
           _scholarship = scholarship;
         });
 
         showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text('SUCCESS'),
-            content: Text('Scholarship was created successfully'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return CreatedPg();
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: Text('SUCCESS'),
+                  content: Text('Scholarship was created successfully'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text('Ok'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return CreatedPg();
+                            },
+                          ),
+                        );
                       },
-                    ),
-                  );
-                },
-              )
-            ],
-          )
-        );
+                    )
+                  ],
+                ));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Container(
         alignment: Alignment.center,
-        width:_large? _width/4 : (_medium? _width/3.75: _width/3.5),
+        width: _large ? _width / 4 : (_medium ? _width / 3.75 : _width / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
           gradient: LinearGradient(
@@ -167,9 +166,11 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
           ),
         ),
         padding: const EdgeInsets.all(12.0),
-        child: Text('CREATE', style: TextStyle(fontSize: _large? 14: (_medium? 12: 10)),),
+        child: Text(
+          'CREATE',
+          style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
+        ),
       ),
     );
   }
-
 }

@@ -6,10 +6,10 @@ import 'dart:convert';
 import 'dart:io';
 
 class Created extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context)
+        .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
         title: Text("Created Scholarships"),
@@ -35,10 +35,12 @@ class _CreatedPgState extends State<CreatedPg> {
   }
 
   Future<String> getJsonData() async {
-
     var response = await http.get(
       Uri.encodeFull(url),
-      headers: {HttpHeaders.authorizationHeader: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODc5MDI3LCJpc19zdGFmZiI6ZmFsc2V9.VuR726oQkuMj3a_JH8G3KuRumfCguZioqdkpsF_1PK4"},
+      headers: {
+        HttpHeaders.authorizationHeader:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODc5MDI3LCJpc19zdGFmZiI6ZmFsc2V9.VuR726oQkuMj3a_JH8G3KuRumfCguZioqdkpsF_1PK4"
+      },
     );
 
     print(response.body);
@@ -61,30 +63,33 @@ class _CreatedPgState extends State<CreatedPg> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
       child: Container(
         height: _height,
         width: _width,
-
         child: ListView.builder(
           itemBuilder: (context, index) {
             return Card(
               child: Padding(
-                padding: const EdgeInsets.only (top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                padding: const EdgeInsets.only(
+                    top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       // 'name',
                       data[index]['name'],
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
                     Text(
                       // 'description',
                       data[index]['description'],
-                      style: TextStyle(fontSize: 20),),
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ],
                 ),
               ),

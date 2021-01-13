@@ -5,18 +5,16 @@ import 'applications.dart';
 import 'created.dart';
 import 'newScholarship.dart';
 
-
 class StaffHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context)
+        .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Staff Home"
-        ),
+        title: Text("Staff Home"),
       ),
-      body:StaffHomePg(),
+      body: StaffHomePg(),
     );
   }
 }
@@ -26,7 +24,7 @@ class StaffHomePg extends StatefulWidget {
   _StaffHomePgState createState() => _StaffHomePgState();
 }
 
-class _StaffHomePgState  extends State<StaffHomePg> {
+class _StaffHomePgState extends State<StaffHomePg> {
   double _height;
   double _width;
   double _pixelRatio;
@@ -38,8 +36,8 @@ class _StaffHomePgState  extends State<StaffHomePg> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
       child: Container(
@@ -106,15 +104,11 @@ class _StaffHomePgState  extends State<StaffHomePg> {
         child: Container(
           width: 300,
           height: 100,
-          child: Center(
-              child: Text(
-                  'View all applications')
-          ),
+          child: Center(child: Text('View all applications')),
         ),
       ),
     );
   }
-
 
   Widget button() {
     return FloatingActionButton(

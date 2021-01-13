@@ -7,14 +7,13 @@ import 'form.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size; //This provides the total height & width of screen
+    Size size = MediaQuery.of(context)
+        .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Student Home"
-        ),
+        title: Text("Student Home"),
       ),
-      body:Home(),
+      body: Home(),
     );
   }
 }
@@ -36,8 +35,8 @@ class _HomeState extends State<Home> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _large =  ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    _medium =  ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+    _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
       child: Container(
@@ -74,13 +73,12 @@ class _HomeState extends State<Home> {
           width: 300,
           height: 100,
           child: Center(
-              child: Text(
-                  'View available Scholarships',
-              ),
+            child: Text(
+              'View available Scholarships',
+            ),
           ),
         ),
       ),
     );
   }
-
 }
