@@ -1,7 +1,6 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/SignUpModel.dart';
-import 'package:adrian_kenya/ui/staff/staffHome.dart';
-import 'package:adrian_kenya/ui/student/home.dart';
+import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/customappbar.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
@@ -170,8 +169,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return HomePage();
-              // return StaffHomePg();
+              return LoginScreen();
+
             },
           ),
         );

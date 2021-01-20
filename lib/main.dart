@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: "Adrian",
       theme: ThemeData(primaryColor: mPrimaryColor),
       routes: <String, WidgetBuilder>{
-        SIGN_IN: (BuildContext context) => LoginPage(),
+        SIGN_IN: (BuildContext context) => LoginScreen(),
         SIGN_UP: (BuildContext context) => SignUpScreen(),
 
         //student

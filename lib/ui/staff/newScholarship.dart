@@ -46,19 +46,21 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: _height / 10),
-              createTextRow(),
-              applicationForm(),
-              SizedBox(height: _height / 20),
-              button(),
-            ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          padding: EdgeInsets.only(bottom: 5),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: _height / 10),
+                createTextRow(),
+                applicationForm(),
+                SizedBox(height: _height / 20),
+                button(),
+              ],
+            ),
           ),
         ),
       ),

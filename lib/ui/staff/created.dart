@@ -39,7 +39,7 @@ class _CreatedPgState extends State<CreatedPg> {
       Uri.encodeFull(url),
       headers: {
         HttpHeaders.authorizationHeader:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEwODc5MDI3LCJpc19zdGFmZiI6ZmFsc2V9.VuR726oQkuMj3a_JH8G3KuRumfCguZioqdkpsF_1PK4"
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMzI3LCJpc19zdGFmZiI6dHJ1ZX0.AnatYsL31HqP-KCy01bGOwcu1nzay0-s97yIkjipQUQ"
       },
     );
 
@@ -67,35 +67,37 @@ class _CreatedPgState extends State<CreatedPg> {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      // 'name',
-                      data[index]['name'],
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      // 'description',
-                      data[index]['description'],
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        // 'name',
+                        data[index]['name'],
+                        style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        // 'description',
+                        data[index]['description'],
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-          itemCount: data.length,
+              );
+            },
+            itemCount: data.length,
+          ),
         ),
       ),
     );

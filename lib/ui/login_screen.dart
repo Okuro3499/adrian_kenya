@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/login_model.dart';
 import 'package:adrian_kenya/ui/staff/staffHome.dart';
@@ -6,19 +8,11 @@ import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
-
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      body: LoginScreen(),
-    );
-  }
-}
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,15 +20,55 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isLoading = false;
+
+  signIn(String email, String password) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map body = {"email": email, "password": password};
+    var jsonResponse;
+    var res = await http.post("https://geoproserver.herokuapp.com/api/login/", body: body);
+
+    if(res.statusCode == 200) {
+      jsonResponse = json.decode(res.body);
+    }
+
+    print(res.statusCode);
+    // print(res.body);
+
+
+    if (jsonResponse != null) {
+      setState(() {
+        _isLoading = false;
+      });
+      sharedPreferences.setString("token", jsonResponse['token']);
+
+      String token = jsonResponse['token'];
+
+      /* decode() method will decode your token's payload */
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      // Now you can use your decoded token
+      print(decodedToken["is_staff"]);
+
+      if(decodedToken["is_staff"] != true) {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+                (Route<dynamic> route) => false);
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => StaffHomePage()),
+                (Route<dynamic> route) => false);
+      }
+      print(jsonResponse['token']);
+    }
+  }
+  bool checkBoxValue = false;
   double _height;
   double _width;
   double _pixelRatio;
   bool _large;
   bool _medium;
 
-  LoginModel _user;
+  LoginModel _logUser;
 
-  TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -44,26 +78,29 @@ class _LoginScreenState extends State<LoginScreen> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              clipShape(),
-              welcomeTextRow(),
-              signInTextRow(),
-              form(),
-              forgetPassTextRow(),
-              SizedBox(height: _height / 12),
-              button(),
-              signUpTextRow(),
-            ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          padding: EdgeInsets.only(bottom: 5),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                clipShape(),
+                welcomeTextRow(),
+                signInTextRow(),
+                form(),
+                forgetPassTextRow(),
+                SizedBox(height: _height / 12),
+                button(),
+                signUpTextRow(),
+              ],
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 
@@ -157,17 +194,16 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
-        // key: globalFormKey,
         child: Column(
           children: <Widget>[
             emailTextFormField(),
             SizedBox(height: _height / 40.0),
             passwordTextFormField(),
             SizedBox(height: _height / 60.0),
-            _user == null
-                ? Container()
-                : Text(
-                    "The user ${_user.email}, ${_user.token} Login successful")
+            // _logUser == null
+            //     ? Container()
+            //     : Text(
+            //         "The user ${_logUser.email}, ${_logUser.token} is Logged in successfully")
           ],
         ),
       ),
@@ -185,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget passwordTextFormField() {
     return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.visiblePassword,
       textEditingController: passwordController,
       icon: Icons.lock,
       obscureText: true,
@@ -227,28 +263,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () async {
-        final String email = emailController.text;
-        final String password = passwordController.text;
-
-        final LoginModel user = await loginUser(email, password);
-
+      onPressed: emailController.text == "" || passwordController.text == ""
+        ? null
+          : () {
         setState(() {
-          _user = user;
+          _isLoading =true;
         });
+        signIn(emailController.text, passwordController.text);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            // return StaffHomePg();
-            return HomePage();
-          }),
-        );
 
-        print("Routing to your account");
-        Scaffold.of(context)
-            // ignore: deprecated_member_use
-            .showSnackBar(SnackBar(content: Text('Login Successful')));
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
