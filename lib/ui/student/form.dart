@@ -68,25 +68,28 @@ class _FormPgState extends State<FormPg> {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: _height / 10),
-              personalTextRow(),
-              personalForm(),
-              SizedBox(height: _height / 20),
-              educationTextRow(),
-              educationForm(),
-              SizedBox(height: _height / 20),
-              button(),
-            ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          padding: EdgeInsets.only(bottom: 5),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: _height / 10),
+                personalTextRow(),
+                personalForm(),
+                SizedBox(height: _height / 20),
+                educationTextRow(),
+                educationForm(),
+                SizedBox(height: _height / 20),
+                button(),
+              ],
+            ),
           ),
         ),
-      ),
+      )
+
     );
   }
 

@@ -40,20 +40,22 @@ class _StaffHomePgState extends State<StaffHomePg> {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 2),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: _height / 25),
-              viewScholarshipCard(),
-              SizedBox(height: _height / 25),
-              applicationsCard(),
-              SizedBox(height: _height / 2.8),
-              button(),
-            ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          padding: EdgeInsets.only(bottom: 2),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: _height / 25),
+                viewScholarshipCard(),
+                SizedBox(height: _height / 25),
+                applicationsCard(),
+                SizedBox(height: _height / 2.8),
+                button(),
+              ],
+            ),
           ),
         ),
       ),
