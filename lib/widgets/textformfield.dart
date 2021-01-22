@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
         this.keyboardType,
         this.icon,
         this.obscureText= false,
-        Function(String) onSaved,
+        String Function(String value) validator,
       });
 
   @override

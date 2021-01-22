@@ -4,7 +4,6 @@ import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/customappbar.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
-import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -21,6 +20,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
+  bool isHidden = true;
+
+  void _toggleVisibility() {
+    setState(() {
+      isHidden = !isHidden;
+    });
+  }
 
   SignUpModel _user;
 
@@ -112,11 +119,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             emailTextFormField(),
             SizedBox(height: _height / 60.0),
             passwordTextFormField(),
-            SizedBox(height: _height / 60.0),
-            _user == null
-                ? Container()
-                : Text(
-                    "The user ${_user.username}, ${_user.email}, ${_user.token} is created successfully")
           ],
         ),
       ),
@@ -124,30 +126,61 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget userNameTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: usernameController,
-      icon: Icons.person,
-      hint: "Username",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: usernameController,
+        keyboardType: TextInputType.name,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.person, color: Colors.blue[900], size: 20),
+          hintText: "Username",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+      ),
     );
   }
 
   Widget emailTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
-      textEditingController: emailController,
-      icon: Icons.email,
-      hint: "Email ID",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.email, color: Colors.blue[900], size: 20),
+          hintText: "Email ID",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+      ),
     );
   }
 
   Widget passwordTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.visiblePassword,
-      textEditingController: passwordController,
-      obscureText: true,
-      icon: Icons.lock,
-      hint: "Password",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: passwordController,
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: isHidden,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.lock, color: Colors.blue[900], size: 20),
+          hintText: "Password",
+          suffixIcon: IconButton(onPressed: _toggleVisibility, icon: isHidden ? Icon(Icons.visibility_off, color: Colors.blue[900], size: 20) : Icon(Icons.visibility, color: Colors.blue[900], size: 20)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+      ),
     );
   }
 

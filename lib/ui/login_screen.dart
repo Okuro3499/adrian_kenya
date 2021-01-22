@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/login_model.dart';
 import 'package:adrian_kenya/ui/staff/staffHome.dart';
 import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
-import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +19,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
+  bool isHidden = true;
+
+  void _toggleVisibility() {
+    setState(() {
+      isHidden = !isHidden;
+    });
+  }
 
   signIn(String email, String password) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -68,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   LoginModel _logUser;
 
+  var formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -92,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 welcomeTextRow(),
                 signInTextRow(),
                 form(),
-                forgetPassTextRow(),
                 SizedBox(height: _height / 12),
                 button(),
                 signUpTextRow(),
@@ -194,16 +199,13 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
+         key: formKey,
         child: Column(
           children: <Widget>[
             emailTextFormField(),
             SizedBox(height: _height / 40.0),
             passwordTextFormField(),
             SizedBox(height: _height / 60.0),
-            // _logUser == null
-            //     ? Container()
-            //     : Text(
-            //         "The user ${_logUser.email}, ${_logUser.token} is Logged in successfully")
           ],
         ),
       ),
@@ -211,50 +213,41 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget emailTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
-      textEditingController: emailController,
-      icon: Icons.email,
-      hint: "Email ID",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.email, color: Colors.blue[900], size: 20),
+          hintText: "Email ID",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+      ),
     );
   }
 
   Widget passwordTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.visiblePassword,
-      textEditingController: passwordController,
-      icon: Icons.lock,
-      obscureText: true,
-      hint: "Password",
-    );
-  }
-
-  Widget forgetPassTextRow() {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 40.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "Forgot your password?",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: _large ? 14 : (_medium ? 12 : 10)),
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          GestureDetector(
-            onTap: () {
-              print("Routing");
-            },
-            child: Text(
-              "Recover",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, color: Colors.blue[900]),
-            ),
-          )
-        ],
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: passwordController,
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: isHidden,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.lock, color: Colors.blue[900], size: 20),
+          hintText: "Password",
+          suffixIcon: IconButton(onPressed: _toggleVisibility, icon: isHidden ? Icon(Icons.visibility_off, color: Colors.blue[900], size: 20) : Icon(Icons.visibility, color: Colors.blue[900], size: 20)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
       ),
     );
   }
@@ -266,7 +259,11 @@ class _LoginScreenState extends State<LoginScreen> {
       onPressed: emailController.text == "" || passwordController.text == ""
         ? null
           : () {
+
         setState(() {
+          if (formKey.currentState.validate()){
+
+          }
           _isLoading =true;
         });
         signIn(emailController.text, passwordController.text);
