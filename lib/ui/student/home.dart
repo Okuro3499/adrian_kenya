@@ -39,16 +39,18 @@ class _HomeState extends State<Home> {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 2),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: _height / 25),
-              viewScholarshipCard(),
-            ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          padding: EdgeInsets.only(bottom: 2),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: _height / 25),
+                viewScholarshipCard(),
+              ],
+            ),
           ),
         ),
       ),

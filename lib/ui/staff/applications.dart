@@ -41,8 +41,6 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
           "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMzI3LCJpc19zdGFmZiI6dHJ1ZX0.AnatYsL31HqP-KCy01bGOwcu1nzay0-s97yIkjipQUQ"
     });
 
-    print(response.body);
-
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
@@ -84,27 +82,29 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
                             FlatButton(
                               child: Text('Accept'),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return CreatedPg();
-                                    },
-                                  ),
-                                );
+                                Navigator.of(context).pop(true);
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) {
+                                //       return CreatedPg();
+                                //     },
+                                //   ),
+                                // );
                               },
                             ),
                             FlatButton(
                               child: Text('Decline'),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return CreatedPg();
-                                    },
-                                  ),
-                                );
+                                Navigator.of(context).pop(false);
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) {
+                                //       return CreatedPg();
+                                //     },
+                                //   ),
+                                // );
                               },
                             )
                           ],

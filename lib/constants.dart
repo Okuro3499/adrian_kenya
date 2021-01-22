@@ -16,3 +16,5 @@ final String CREATED = 'created';
 final String STAFFHOME = 'staffhome';
 final String NEWSCHOLARSHIP = 'newscholarship';
 final String APPLICATIONS = 'applications';
+
+final String LOADER = 'loader';

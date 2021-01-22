@@ -15,7 +15,7 @@ class Available extends StatelessWidget {
         .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-        title: Text("Scholarship"),
+        title: Text("Available Scholarships"),
       ),
       body: AvailableScholarship(),
     );
@@ -46,8 +46,6 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       },
     );
 
-    print(response.body);
-
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
@@ -70,41 +68,42 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-      child: Container(
-        height: _height,
-        width: _width,
-        child: ListView.builder(
-          itemBuilder: (context, int index) {
-            return GestureDetector(
-              onTap: () {
-                setState(() {});
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) =>
-                          FormPg(scholarship_id: data[index]['pk'])),
-                );
-                print(data[index]['pk']);
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(data[index]['name'],
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold)),
-                      Text(data[index]['description'],
-                          style: TextStyle(fontSize: 20)),
-                    ],
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          child: ListView.builder(
+            itemBuilder: (context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {});
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>
+                            FormPg(scholarship_id: data[index]['pk'])),
+                  );
+                },
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(data[index]['name'],
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold)),
+                        Text(data[index]['description'],
+                            style: TextStyle(fontSize: 20)),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-          itemCount: data.length,
+              );
+            },
+            itemCount: data.length,
+          ),
         ),
       ),
     );

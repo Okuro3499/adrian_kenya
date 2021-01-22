@@ -79,17 +79,16 @@ class _FormPgState extends State<FormPg> with Validator {
                 SizedBox(height: _height / 10),
                 personalTextRow(),
                 personalForm(),
-                SizedBox(height: _height / 20),
-                educationTextRow(),
-                educationForm(),
+                // SizedBox(height: _height / 20),
+                // educationTextRow(),
+                // educationForm(),
                 SizedBox(height: _height / 20),
                 button(),
               ],
             ),
           ),
         ),
-      )
-
+      ),
     );
   }
 
@@ -128,6 +127,19 @@ class _FormPgState extends State<FormPg> with Validator {
             countryTextFormField(),
             SizedBox(height: _height / 40.0),
             cityTextFormField(),
+            SizedBox(height: _height / 40.0),
+            educationTextRow(),
+            // SizedBox(height: _height / 40.0),
+            // educationForm(),
+            SizedBox(height: _height / 40.0),
+            schoolNameTextFormField(),
+            SizedBox(height: _height / 40.0),
+            degreeTextFormField(),
+            SizedBox(height: _height / 40.0),
+            cvTextFormField(),
+            SizedBox(height: _height / 40.0),
+            postalCodeTextFormField(),
+            SizedBox(height: _height / 40.0),
           ],
         ),
       ),
@@ -137,7 +149,7 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget firstNameTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: firstNameController,
         keyboardType: TextInputType.name,
@@ -160,7 +172,7 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget lastNameTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: lastNameController,
         keyboardType: TextInputType.name,
@@ -183,7 +195,7 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget mobileTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: mobileController,
         keyboardType: TextInputType.phone,
@@ -206,13 +218,14 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget countryTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: countryController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.add_location_alt_outlined, color: Colors.blue[900], size: 20),
+          prefixIcon: Icon(Icons.add_location_alt_outlined,
+              color: Colors.blue[900], size: 20),
           hintText: "Country",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -229,13 +242,14 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget cityTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: cityController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.add_location_alt_outlined, color: Colors.blue[900], size: 20),
+          prefixIcon: Icon(Icons.add_location_alt_outlined,
+              color: Colors.blue[900], size: 20),
           hintText: "City",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -267,38 +281,39 @@ class _FormPgState extends State<FormPg> with Validator {
     );
   }
 
-  Widget educationForm() {
-    return Container(
-      margin: EdgeInsets.only(
-          left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
-      child: Form(
-        key: globalFormKey,
-        child: Column(
-          children: <Widget>[
-            schoolNameTextFormField(),
-            SizedBox(height: _height / 40.0),
-            degreeTextFormField(),
-            SizedBox(height: _height / 40.0),
-            cvTextFormField(),
-            SizedBox(height: _height / 40.0),
-            postalCodeTextFormField(),
-            SizedBox(height: _height / 40.0),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget educationForm() {
+  //   return Container(
+  //     margin: EdgeInsets.only(
+  //         left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
+  //     child: Form(
+  //       key: globalFormKey,
+  //       child: Column(
+  //         children: <Widget>[
+  //           schoolNameTextFormField(),
+  //           SizedBox(height: _height / 40.0),
+  //           degreeTextFormField(),
+  //           SizedBox(height: _height / 40.0),
+  //           cvTextFormField(),
+  //           SizedBox(height: _height / 40.0),
+  //           postalCodeTextFormField(),
+  //           SizedBox(height: _height / 40.0),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget schoolNameTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: schoolNameController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.school_outlined, color: Colors.blue[900], size: 20),
+          prefixIcon:
+              Icon(Icons.school_outlined, color: Colors.blue[900], size: 20),
           hintText: "Name of School",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -315,13 +330,14 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget degreeTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: degreeController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.school_outlined, color: Colors.blue[900], size: 20),
+          prefixIcon:
+              Icon(Icons.school_outlined, color: Colors.blue[900], size: 20),
           hintText: "Degree",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -338,13 +354,14 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget cvTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: coverLetterController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.description, color: Colors.blue[900], size: 20),
+          prefixIcon:
+              Icon(Icons.description, color: Colors.blue[900], size: 20),
           hintText: "Degree",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -361,14 +378,15 @@ class _FormPgState extends State<FormPg> with Validator {
   Widget postalCodeTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: postalCodeController,
         keyboardType: TextInputType.text,
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.add_location_alt_outlined, color: Colors.blue[900], size: 20),
-          hintText: "School address",
+          prefixIcon: Icon(Icons.add_location_alt_outlined,
+              color: Colors.blue[900], size: 20),
+          hintText: "Postal Code",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
@@ -401,14 +419,22 @@ class _FormPgState extends State<FormPg> with Validator {
         final String cover_letter = coverLetterController.text;
         final String postal_code = postalCodeController.text;
 
-        final ApplyModel apply = await applyScholarship(widget.scholarship_id, first_name, last_name,
-            mobile, country, city, school_name, degree, cover_letter, postal_code);
+        final ApplyModel apply = await applyScholarship(
+            widget.scholarship_id,
+            first_name,
+            last_name,
+            mobile,
+            country,
+            city,
+            school_name,
+            degree,
+            cover_letter,
+            postal_code);
 
         setState(() {
           _apply = apply;
         });
 
-        print(widget.scholarship_id);
         showDialog(
           context: context,
           builder: (_) => AlertDialog(

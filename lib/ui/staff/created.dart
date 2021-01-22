@@ -43,8 +43,6 @@ class _CreatedPgState extends State<CreatedPg> {
       },
     );
 
-    print(response.body);
-
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;

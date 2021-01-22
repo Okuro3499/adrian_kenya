@@ -47,14 +47,18 @@ class _LoginScreenState extends State<LoginScreen> with Validator {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 
       if (decodedToken["is_staff"] != true) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-            (Route<dynamic> route) => false);
+        Navigator.of(context).push(
+            // AndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => HomePage())
+            // ,(Route<dynamic> route) => false
+            );
       } else {
-        Navigator.of(context).pushAndRemoveUntil(
+        Navigator.of(context).push(
+            // AndRemoveUntil(
             MaterialPageRoute(
-                builder: (BuildContext context) => StaffHomePage()),
-            (Route<dynamic> route) => false);
+                builder: (BuildContext context) => StaffHomePage())
+            // ,(Route<dynamic> route) => false);
+            );
       }
     }
   }
@@ -82,25 +86,26 @@ class _LoginScreenState extends State<LoginScreen> with Validator {
 
     return Material(
         child: Scaffold(
-      body: Container(
-        height: _height,
-        width: _width,
-        padding: EdgeInsets.only(bottom: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              clipShape(),
-              welcomeTextRow(),
-              signInTextRow(),
-              form(),
-              SizedBox(height: _height / 12),
-              button(),
-              signUpTextRow(),
-            ],
+          body: Container(
+            height: _height,
+            width: _width,
+            padding: EdgeInsets.only(bottom: 5),
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  clipShape(),
+                  welcomeTextRow(),
+                  signInTextRow(),
+                  form(),
+                  SizedBox(height: _height / 12),
+                  button(),
+                  signUpTextRow(),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
-    ));
+    );
   }
 
   Widget clipShape() {
