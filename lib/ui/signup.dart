@@ -1,6 +1,7 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/SignUpModel.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
+import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/customappbar.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
@@ -13,7 +14,7 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with Validator {
   bool checkBoxValue = false;
   double _height;
   double _width;
@@ -31,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   SignUpModel _user;
 
+  GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
@@ -112,6 +114,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 20.0),
       child: Form(
+        key: formKey,
         child: Column(
           children: <Widget>[
             userNameTextFormField(),
@@ -140,6 +143,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
         ),
+        validator: validateName,
+        onSaved: (String value) {
+          usernameController.text = value;
+        },
       ),
     );
   }
@@ -159,6 +166,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
         ),
+        validator: validateEmail,
+        onSaved: (String value) {
+          emailController.text = value;
+        },
       ),
     );
   }
@@ -180,6 +191,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
         ),
+        validator: validatePasswordLength,
+        onSaved: (String value) {
+          passwordController.text = value;
+        },
       ),
     );
   }
@@ -189,6 +204,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
+        if (!formKey.currentState.validate()) {
+          return;
+        }
+        formKey.currentState.save();
+
         final String username = usernameController.text;
         final String email = emailController.text;
         final String password = passwordController.text;
@@ -207,7 +227,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             },
           ),
         );
-        print("Routing to your account");
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

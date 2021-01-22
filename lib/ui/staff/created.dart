@@ -81,13 +81,11 @@ class _CreatedPgState extends State<CreatedPg> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        // 'name',
                         data[index]['name'],
                         style:
                         TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        // 'description',
                         data[index]['description'],
                         style: TextStyle(fontSize: 20),
                       ),

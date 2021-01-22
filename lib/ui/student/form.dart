@@ -1,5 +1,6 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/apply_model.dart';
+import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class FormPg extends StatefulWidget {
   _FormPgState createState() => _FormPgState();
 }
 
-class _FormPgState extends State<FormPg> {
+class _FormPgState extends State<FormPg> with Validator {
   int scholarship_id;
 
   double _height;
@@ -51,8 +52,7 @@ class _FormPgState extends State<FormPg> {
   TextEditingController coverLetterController = TextEditingController();
   TextEditingController postalCodeController = TextEditingController();
 
-  GlobalKey<FormState> globalForm1Key = new GlobalKey<FormState>();
-  GlobalKey<FormState> globalForm2Key = new GlobalKey<FormState>();
+  GlobalKey<FormState> globalFormKey = new GlobalKey<FormState>();
 
   void initState() {
     super.initState();
@@ -116,7 +116,7 @@ class _FormPgState extends State<FormPg> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
-        key: globalForm1Key,
+        key: globalFormKey,
         child: Column(
           children: <Widget>[
             firstNameTextFormField(),
@@ -135,47 +135,117 @@ class _FormPgState extends State<FormPg> {
   }
 
   Widget firstNameTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.name,
-      textEditingController: firstNameController,
-      icon: Icons.person,
-      hint: "First Name",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: firstNameController,
+        keyboardType: TextInputType.name,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.person, color: Colors.blue[900], size: 20),
+          hintText: "First Name",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateName,
+        onSaved: (String value) {
+          firstNameController.text = value;
+        },
+      ),
     );
   }
 
   Widget lastNameTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.name,
-      textEditingController: lastNameController,
-      icon: Icons.person,
-      hint: "Last Name",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: lastNameController,
+        keyboardType: TextInputType.name,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.person, color: Colors.blue[900], size: 20),
+          hintText: "Last Name",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateName,
+        onSaved: (String value) {
+          lastNameController.text = value;
+        },
+      ),
     );
   }
 
   Widget mobileTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.phone,
-      textEditingController: mobileController,
-      icon: Icons.phone,
-      hint: "Phone number",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: mobileController,
+        keyboardType: TextInputType.phone,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.phone, color: Colors.blue[900], size: 20),
+          hintText: "Phone number",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateMobile,
+        onSaved: (String value) {
+          mobileController.text = value;
+        },
+      ),
     );
   }
 
   Widget countryTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: countryController,
-      icon: Icons.add_location_alt_outlined,
-      hint: "Country",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: countryController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.add_location_alt_outlined, color: Colors.blue[900], size: 20),
+          hintText: "Country",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateCountry,
+        onSaved: (String value) {
+          countryController.text = value;
+        },
+      ),
     );
   }
 
   Widget cityTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: cityController,
-      icon: Icons.add_location_alt_outlined,
-      hint: "City",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: cityController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.add_location_alt_outlined, color: Colors.blue[900], size: 20),
+          hintText: "City",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateCity,
+        onSaved: (String value) {
+          cityController.text = value;
+        },
+      ),
     );
   }
 
@@ -202,7 +272,7 @@ class _FormPgState extends State<FormPg> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
-        key: globalForm2Key,
+        key: globalFormKey,
         child: Column(
           children: <Widget>[
             schoolNameTextFormField(),
@@ -220,38 +290,94 @@ class _FormPgState extends State<FormPg> {
   }
 
   Widget schoolNameTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.name,
-      textEditingController: schoolNameController,
-      icon: Icons.school_outlined,
-      hint: "Name of School",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: schoolNameController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.school_outlined, color: Colors.blue[900], size: 20),
+          hintText: "Name of School",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateSchoolName,
+        onSaved: (String value) {
+          schoolNameController.text = value;
+        },
+      ),
     );
   }
 
   Widget degreeTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: degreeController,
-      icon: Icons.school_outlined,
-      hint: "Degree",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: degreeController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.school_outlined, color: Colors.blue[900], size: 20),
+          hintText: "Degree",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateDegree,
+        onSaved: (String value) {
+          degreeController.text = value;
+        },
+      ),
     );
   }
 
   Widget cvTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: coverLetterController,
-      icon: Icons.description,
-      hint: "Cover Letter",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: coverLetterController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.description, color: Colors.blue[900], size: 20),
+          hintText: "Degree",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateCv,
+        onSaved: (String value) {
+          coverLetterController.text = value;
+        },
+      ),
     );
   }
 
   Widget postalCodeTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: postalCodeController,
-      icon: Icons.add_location_alt_outlined,
-      hint: "School address",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: postalCodeController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.add_location_alt_outlined, color: Colors.blue[900], size: 20),
+          hintText: "School address",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validatePostal,
+        onSaved: (String value) {
+          postalCodeController.text = value;
+        },
+      ),
     );
   }
 
@@ -260,6 +386,11 @@ class _FormPgState extends State<FormPg> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
+        if (!globalFormKey.currentState.validate()) {
+          return;
+        }
+        globalFormKey.currentState.save();
+
         final String first_name = firstNameController.text;
         final String last_name = lastNameController.text;
         final String mobile = mobileController.text;

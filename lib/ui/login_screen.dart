@@ -8,6 +8,7 @@ import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:adrian_kenya/utils/validator.dart';
 
 import '../constants.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +18,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with Validator {
   bool _isLoading = false;
   bool isHidden = true;
 
@@ -27,43 +28,37 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  signIn(String email, String password) async{
+  signIn(String email, String password) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map body = {"email": email, "password": password};
     var jsonResponse;
-    var res = await http.post("https://geoproserver.herokuapp.com/api/login/", body: body);
-
-    if(res.statusCode == 200) {
+    var res = await http.post("https://geoproserver.herokuapp.com/api/login/",
+        body: body);
+    if (res.statusCode == 200) {
       jsonResponse = json.decode(res.body);
     }
-
-    print(res.statusCode);
-    // print(res.body);
-
-
     if (jsonResponse != null) {
       setState(() {
         _isLoading = false;
       });
       sharedPreferences.setString("token", jsonResponse['token']);
-
       String token = jsonResponse['token'];
-
       /* decode() method will decode your token's payload */
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-      // Now you can use your decoded token
-      print(decodedToken["is_staff"]);
 
-      if(decodedToken["is_staff"] != true) {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-                (Route<dynamic> route) => false);
+      if (decodedToken["is_staff"] != true) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            (Route<dynamic> route) => false);
       } else {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => StaffHomePage()),
-                (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => StaffHomePage()),
+            (Route<dynamic> route) => false);
       }
-      print(jsonResponse['token']);
     }
   }
+
   bool checkBoxValue = false;
   double _height;
   double _width;
@@ -73,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   LoginModel _logUser;
 
-  var formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -86,27 +81,26 @@ class _LoginScreenState extends State<LoginScreen> {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-      child: Scaffold(
-        body: Container(
-          height: _height,
-          width: _width,
-          padding: EdgeInsets.only(bottom: 5),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                clipShape(),
-                welcomeTextRow(),
-                signInTextRow(),
-                form(),
-                SizedBox(height: _height / 12),
-                button(),
-                signUpTextRow(),
-              ],
-            ),
+        child: Scaffold(
+      body: Container(
+        height: _height,
+        width: _width,
+        padding: EdgeInsets.only(bottom: 5),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              clipShape(),
+              welcomeTextRow(),
+              signInTextRow(),
+              form(),
+              SizedBox(height: _height / 12),
+              button(),
+              signUpTextRow(),
+            ],
           ),
         ),
-      )
-    );
+      ),
+    ));
   }
 
   Widget clipShape() {
@@ -199,13 +193,12 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
-         key: formKey,
+        key: formKey,
         child: Column(
           children: <Widget>[
             emailTextFormField(),
             SizedBox(height: _height / 40.0),
             passwordTextFormField(),
-            SizedBox(height: _height / 60.0),
           ],
         ),
       ),
@@ -215,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget emailTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
@@ -227,6 +220,10 @@ class _LoginScreenState extends State<LoginScreen> {
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
         ),
+        validator: validateEmail,
+        onSaved: (String value) {
+          emailController.text = value;
+        },
       ),
     );
   }
@@ -234,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget passwordTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),
-      elevation: _large? 12 : (_medium? 10 : 8),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
       child: TextFormField(
         controller: passwordController,
         keyboardType: TextInputType.visiblePassword,
@@ -243,11 +240,20 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.lock, color: Colors.blue[900], size: 20),
           hintText: "Password",
-          suffixIcon: IconButton(onPressed: _toggleVisibility, icon: isHidden ? Icon(Icons.visibility_off, color: Colors.blue[900], size: 20) : Icon(Icons.visibility, color: Colors.blue[900], size: 20)),
+          suffixIcon: IconButton(
+              onPressed: _toggleVisibility,
+              icon: isHidden
+                  ? Icon(Icons.visibility_off,
+                      color: Colors.blue[900], size: 20)
+                  : Icon(Icons.visibility, color: Colors.blue[900], size: 20)),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
         ),
+        validator: validatePasswordLength,
+        onSaved: (String value) {
+          passwordController.text = value;
+        },
       ),
     );
   }
@@ -256,19 +262,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return RaisedButton(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: emailController.text == "" || passwordController.text == ""
-        ? null
-          : () {
-
+      onPressed: () {
+        if (!formKey.currentState.validate()) {
+          return;
+        }
+        formKey.currentState.save();
         setState(() {
-          if (formKey.currentState.validate()){
-
-          }
-          _isLoading =true;
+          _isLoading = true;
         });
         signIn(emailController.text, passwordController.text);
-
-
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
