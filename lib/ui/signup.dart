@@ -23,11 +23,29 @@ class _SignUpScreenState extends State<SignUpScreen> with Validator {
   bool _medium;
 
   bool isHidden = true;
+  bool _isLoading = false;
 
   void _toggleVisibility() {
     setState(() {
       isHidden = !isHidden;
     });
+  }
+
+  showdialog(context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Row(
+                children: <Widget>[
+                  Text("Creating Account..."),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  )
+                ],
+              ));
+        });
   }
 
   SignUpModel _user;
@@ -209,6 +227,12 @@ class _SignUpScreenState extends State<SignUpScreen> with Validator {
         }
         formKey.currentState.save();
 
+        setState(() {
+          _isLoading = true;
+        });
+
+        showdialog(context);
+
         final String username = usernameController.text;
         final String email = emailController.text;
         final String password = passwordController.text;
@@ -218,15 +242,18 @@ class _SignUpScreenState extends State<SignUpScreen> with Validator {
         setState(() {
           _user = user;
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return LoginScreen();
-
-            },
-          ),
-        );
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()),
+                (Route<dynamic> route) => false);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return LoginScreen();
+        //     },
+        //   ),
+        // );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

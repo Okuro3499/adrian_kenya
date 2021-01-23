@@ -2,7 +2,6 @@ import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/apply_model.dart';
 import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
-import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 import 'availableScholarship.dart';

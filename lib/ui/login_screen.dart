@@ -14,13 +14,31 @@ import '../constants.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
+  LoginScreen({Key key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> with Validator {
-  bool _isLoading = false;
   bool isHidden = true;
+  bool _isLoading = false;
+  showdialog(context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Row(
+            children: <Widget>[
+              Text("Logging in..."),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
+              )
+            ],
+          ));
+        });
+  }
 
   void _toggleVisibility() {
     setState(() {
@@ -29,6 +47,10 @@ class _LoginScreenState extends State<LoginScreen> with Validator {
   }
 
   signIn(String email, String password) async {
+    setState(() {
+      _isLoading = true;
+    });
+    showdialog(context);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map body = {"email": email, "password": password};
     var jsonResponse;
@@ -36,29 +58,32 @@ class _LoginScreenState extends State<LoginScreen> with Validator {
         body: body);
     if (res.statusCode == 200) {
       jsonResponse = json.decode(res.body);
+      // Navigator.of(context).pushNamed("Home");
     }
     if (jsonResponse != null) {
       setState(() {
         _isLoading = false;
       });
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
+
       sharedPreferences.setString("token", jsonResponse['token']);
       String token = jsonResponse['token'];
       /* decode() method will decode your token's payload */
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 
       if (decodedToken["is_staff"] != true) {
-        Navigator.of(context).push(
-            // AndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => HomePage())
-            // ,(Route<dynamic> route) => false
-            );
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+            (Route<dynamic> route) => false);
+        // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => HomePage()));
       } else {
-        Navigator.of(context).push(
-            // AndRemoveUntil(
+        Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (BuildContext context) => StaffHomePage())
-            // ,(Route<dynamic> route) => false);
-            );
+                builder: (BuildContext context) => StaffHomePage()),
+            (Route<dynamic> route) => false);
+        // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => StaffHomePage()));
       }
     }
   }
@@ -85,26 +110,26 @@ class _LoginScreenState extends State<LoginScreen> with Validator {
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
     return Material(
-        child: Scaffold(
-          body: Container(
-            height: _height,
-            width: _width,
-            padding: EdgeInsets.only(bottom: 5),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  clipShape(),
-                  welcomeTextRow(),
-                  signInTextRow(),
-                  form(),
-                  SizedBox(height: _height / 12),
-                  button(),
-                  signUpTextRow(),
-                ],
-              ),
+      child: Scaffold(
+        body: Container(
+          height: _height,
+          width: _width,
+          padding: EdgeInsets.only(bottom: 5),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                clipShape(),
+                welcomeTextRow(),
+                signInTextRow(),
+                form(),
+                SizedBox(height: _height / 12),
+                button(),
+                signUpTextRow(),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 

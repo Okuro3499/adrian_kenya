@@ -7,7 +7,6 @@ import 'package:adrian_kenya/ui/student/form.dart';
 import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
 import 'package:adrian_kenya/ui/signup.dart';
-import 'package:adrian_kenya/utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'constants.dart';
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
         NEWSCHOLARSHIP: (BuildContext context) => NewScholarshipPg(),
         APPLICATIONS: (BuildContext context) => ApplicationsPg(),
         CREATED: (BuildContext context) =>CreatedPg(),
-        LOADER: (BuildContext context) =>Loader()
       },
       initialRoute: SIGN_IN,
 
