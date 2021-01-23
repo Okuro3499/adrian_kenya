@@ -1,10 +1,10 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/SignUpModel.dart';
 import 'package:adrian_kenya/ui/login_screen.dart';
+import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/custom_shape.dart';
 import 'package:adrian_kenya/widgets/customappbar.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
-import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -14,7 +14,7 @@ class SignUpScreen extends StatefulWidget {
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with Validator {
   bool checkBoxValue = false;
   double _height;
   double _width;
@@ -22,8 +22,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _large;
   bool _medium;
 
+  bool isHidden = true;
+  bool _isLoading = false;
+
+  void _toggleVisibility() {
+    setState(() {
+      isHidden = !isHidden;
+    });
+  }
+
+  showdialog(context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Row(
+                children: <Widget>[
+                  Text("Creating Account..."),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  )
+                ],
+              ));
+        });
+  }
+
   SignUpModel _user;
 
+  GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
@@ -105,6 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 20.0),
       child: Form(
+        key: formKey,
         child: Column(
           children: <Widget>[
             userNameTextFormField(),
@@ -112,11 +140,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             emailTextFormField(),
             SizedBox(height: _height / 60.0),
             passwordTextFormField(),
-            SizedBox(height: _height / 60.0),
-            _user == null
-                ? Container()
-                : Text(
-                    "The user ${_user.username}, ${_user.email}, ${_user.token} is created successfully")
           ],
         ),
       ),
@@ -124,30 +147,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget userNameTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: usernameController,
-      icon: Icons.person,
-      hint: "Username",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: usernameController,
+        keyboardType: TextInputType.name,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.person, color: Colors.blue[900], size: 20),
+          hintText: "Username",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateName,
+        onSaved: (String value) {
+          usernameController.text = value;
+        },
+      ),
     );
   }
 
   Widget emailTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.emailAddress,
-      textEditingController: emailController,
-      icon: Icons.email,
-      hint: "Email ID",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.email, color: Colors.blue[900], size: 20),
+          hintText: "Email ID",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateEmail,
+        onSaved: (String value) {
+          emailController.text = value;
+        },
+      ),
     );
   }
 
   Widget passwordTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.visiblePassword,
-      textEditingController: passwordController,
-      obscureText: true,
-      icon: Icons.lock,
-      hint: "Password",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large? 12 : (_medium? 10 : 8),
+      child: TextFormField(
+        controller: passwordController,
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: isHidden,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.lock, color: Colors.blue[900], size: 20),
+          hintText: "Password",
+          suffixIcon: IconButton(onPressed: _toggleVisibility, icon: isHidden ? Icon(Icons.visibility_off, color: Colors.blue[900], size: 20) : Icon(Icons.visibility, color: Colors.blue[900], size: 20)),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validatePasswordLength,
+        onSaved: (String value) {
+          passwordController.text = value;
+        },
+      ),
     );
   }
 
@@ -156,6 +222,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
+        if (!formKey.currentState.validate()) {
+          return;
+        }
+        formKey.currentState.save();
+
+        setState(() {
+          _isLoading = true;
+        });
+
+        showdialog(context);
+
         final String username = usernameController.text;
         final String email = emailController.text;
         final String password = passwordController.text;
@@ -165,16 +242,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         setState(() {
           _user = user;
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return LoginScreen();
-
-            },
-          ),
-        );
-        print("Routing to your account");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()),
+                (Route<dynamic> route) => false);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return LoginScreen();
+        //     },
+        //   ),
+        // );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

@@ -43,8 +43,6 @@ class _CreatedPgState extends State<CreatedPg> {
       },
     );
 
-    print(response.body);
-
     setState(() {
       var convertDataToJson = json.decode(response.body);
       data = convertDataToJson;
@@ -81,13 +79,11 @@ class _CreatedPgState extends State<CreatedPg> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        // 'name',
                         data[index]['name'],
                         style:
                         TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        // 'description',
                         data[index]['description'],
                         style: TextStyle(fontSize: 20),
                       ),

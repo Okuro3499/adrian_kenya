@@ -1,7 +1,7 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/create_model.dart';
+import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
-import 'package:adrian_kenya/widgets/textformfield.dart';
 import 'package:flutter/material.dart';
 
 import 'created.dart';
@@ -25,7 +25,7 @@ class NewScholarshipPg extends StatefulWidget {
   _NewScholarshipPgState createState() => _NewScholarshipPgState();
 }
 
-class _NewScholarshipPgState extends State<NewScholarshipPg> {
+class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
   double _height;
   double _width;
   double _pixelRatio;
@@ -36,7 +36,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
 
   TextEditingController scholarshipNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  GlobalKey<FormState> globalForm3Key = new GlobalKey<FormState>();
+  GlobalKey<FormState> globalFormKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
       child: Form(
-        key: globalForm3Key,
+        key: globalFormKey,
         child: Column(
           children: <Widget>[
             scholarshipNameTextFormField(),
@@ -102,20 +102,50 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
   }
 
   Widget scholarshipNameTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.name,
-      textEditingController: scholarshipNameController,
-      icon: Icons.title,
-      hint: "Scholarship Title",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
+      child: TextFormField(
+        controller: scholarshipNameController,
+        keyboardType: TextInputType.name,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.title, color: Colors.blue[900], size: 20),
+          hintText: "Scholarship Title",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none),
+        ),
+        validator: validateTitle,
+        onSaved: (String value) {
+          scholarshipNameController.text = value;
+        },
+      ),
     );
   }
 
   Widget descriptionTextFormField() {
-    return CustomTextField(
-      keyboardType: TextInputType.text,
-      textEditingController: descriptionController,
-      icon: Icons.description_outlined,
-      hint: "Scholarship Details",
+    return Material(
+      borderRadius: BorderRadius.circular(30.0),
+      elevation: _large ? 12 : (_medium ? 10 : 8),
+      child: TextFormField(
+        controller: descriptionController,
+        keyboardType: TextInputType.text,
+        cursorColor: Colors.blue[900],
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.description_outlined,
+              color: Colors.blue[900], size: 20),
+          hintText: "Scholarship Details",
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30.0),
+              borderSide: BorderSide.none
+          ),
+        ),
+        validator: validateDescription,
+        onSaved: (String value) {
+          descriptionController.text = value;
+        },
+      ),
     );
   }
 
@@ -124,6 +154,11 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
+        if (!globalFormKey.currentState.validate()) {
+          return;
+        }
+        globalFormKey.currentState.save();
+
         final String name = scholarshipNameController.text;
         final String description = descriptionController.text;
 

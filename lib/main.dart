@@ -40,9 +40,10 @@ class MyApp extends StatelessWidget {
         STAFFHOME: (BuildContext context) => StaffHomePg(),
         NEWSCHOLARSHIP: (BuildContext context) => NewScholarshipPg(),
         APPLICATIONS: (BuildContext context) => ApplicationsPg(),
-        CREATED: (BuildContext context) =>CreatedPg()
+        CREATED: (BuildContext context) =>CreatedPg(),
       },
       initialRoute: SIGN_IN,
+
     );
   }
 }
