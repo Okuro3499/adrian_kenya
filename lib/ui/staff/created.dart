@@ -1,9 +1,12 @@
+import 'package:adrian_kenya/ui/staff/staffHome.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+
+import '../login_screen.dart';
 
 class Created extends StatelessWidget {
   @override
@@ -13,6 +16,28 @@ class Created extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Created Scholarships"),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+            ),
+            ListTile(
+                title: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[900],
+                      fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginScreen()),
+                          (Route<dynamic> route) => false);
+                })
+          ],
+        ),
       ),
       body: CreatedPg(),
     );
@@ -50,6 +75,17 @@ class _CreatedPgState extends State<CreatedPg> {
     return "Success";
   }
 
+  Future<bool> _onWillPop() async {
+    return (Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return StaffHomePage();
+        },
+      ),
+    ));
+  }
+
   double _height;
   double _width;
   double _pixelRatio;
@@ -64,35 +100,38 @@ class _CreatedPgState extends State<CreatedPg> {
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
-    return Material(
-      child: Scaffold(
-        body: Container(
-          height: _height,
-          width: _width,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        data[index]['name'],
-                        style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        data[index]['description'],
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Material(
+        child: Scaffold(
+          body: Container(
+            height: _height,
+            width: _width,
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          data[index]['name'],
+                          style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          data[index]['description'],
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-            itemCount: data.length,
+                );
+              },
+              itemCount: data.length,
+            ),
           ),
         ),
       ),

@@ -1,9 +1,11 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/apply_model.dart';
+import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
 
+import '../login_screen.dart';
 import 'availableScholarship.dart';
 
 class FormPage extends StatelessWidget {
@@ -14,6 +16,28 @@ class FormPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Form"),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+            ),
+            ListTile(
+                title: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[900],
+                      fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginScreen()),
+                          (Route<dynamic> route) => false);
+                })
+          ],
+        ),
       ),
       body: FormPg(),
     );
@@ -128,8 +152,6 @@ class _FormPgState extends State<FormPg> with Validator {
             cityTextFormField(),
             SizedBox(height: _height / 40.0),
             educationTextRow(),
-            // SizedBox(height: _height / 40.0),
-            // educationForm(),
             SizedBox(height: _height / 40.0),
             schoolNameTextFormField(),
             SizedBox(height: _height / 40.0),
@@ -361,7 +383,7 @@ class _FormPgState extends State<FormPg> with Validator {
         decoration: InputDecoration(
           prefixIcon:
               Icon(Icons.description, color: Colors.blue[900], size: 20),
-          hintText: "Degree",
+          hintText: "CV",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
@@ -435,26 +457,26 @@ class _FormPgState extends State<FormPg> with Validator {
         });
 
         showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text('SUCCESS'),
-            content: Text('Successfully applied for Scholarship'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return AvailableScholarship();
-                      },
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
+            context: context,
+            builder: (_) => AlertDialog(
+              title: Text('SUCCESS'),
+              content: Text('Scholarship applied successfully'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return AvailableScholarship();
+                        },
+                      ),
+                    );
+                  },
+                )
+              ],
+            )
         );
       },
       textColor: Colors.white,

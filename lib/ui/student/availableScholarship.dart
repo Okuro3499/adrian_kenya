@@ -6,7 +6,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
+import '../login_screen.dart';
 import 'form.dart';
+import 'home.dart';
 
 class Available extends StatelessWidget {
   @override
@@ -16,6 +18,27 @@ class Available extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Available Scholarships"),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(),
+            ListTile(
+                title: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[900],
+                      fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginScreen()),
+                      (Route<dynamic> route) => false);
+                })
+          ],
+        ),
       ),
       body: AvailableScholarship(),
     );
@@ -28,6 +51,12 @@ class AvailableScholarship extends StatefulWidget {
 }
 
 class _AvailableScholarshipState extends State<AvailableScholarship> {
+  double _height;
+  double _width;
+  double _pixelRatio;
+  bool _large;
+  bool _medium;
+
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
   List data = [];
 
@@ -42,7 +71,7 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       Uri.encodeFull(url),
       headers: {
         HttpHeaders.authorizationHeader:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMjI0LCJpc19zdGFmZiI6ZmFsc2V9.Jz8Lz6C9OWGbsWPJOOcRTcnw7xIm0_-w4j7Oj-k96wM"
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMjI0LCJpc19zdGFmZiI6ZmFsc2V9.Jz8Lz6C9OWGbsWPJOOcRTcnw7xIm0_-w4j7Oj-k96wM"
       },
     );
 
@@ -53,11 +82,16 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
     return "Success";
   }
 
-  double _height;
-  double _width;
-  double _pixelRatio;
-  bool _large;
-  bool _medium;
+  Future<bool> _onWillPop() async {
+    return (Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return Home();
+        },
+      ),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,42 +101,45 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
 
-    return Material(
-      child: Scaffold(
-        body: Container(
-          height: _height,
-          width: _width,
-          child: ListView.builder(
-            itemBuilder: (context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {});
-                  Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) =>
-                            FormPg(scholarship_id: data[index]['pk'])),
-                  );
-                },
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(data[index]['name'],
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                        Text(data[index]['description'],
-                            style: TextStyle(fontSize: 20)),
-                      ],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Material(
+        child: Scaffold(
+          body: Container(
+            height: _height,
+            width: _width,
+            child: ListView.builder(
+              itemBuilder: (context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {});
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) =>
+                              FormPg(scholarship_id: data[index]['pk'])),
+                    );
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(data[index]['name'],
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold)),
+                          Text(data[index]['description'],
+                              style: TextStyle(fontSize: 20)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
-            itemCount: data.length,
+                );
+              },
+              itemCount: data.length,
+            ),
           ),
         ),
       ),

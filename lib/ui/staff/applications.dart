@@ -1,10 +1,11 @@
-import 'package:adrian_kenya/ui/staff/created.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
+
+import '../login_screen.dart';
 
 class Application extends StatelessWidget {
   @override
@@ -14,6 +15,28 @@ class Application extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Applications"),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+            ),
+            ListTile(
+                title: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue[900],
+                      fontSize: 15),
+                ),
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginScreen()),
+                          (Route<dynamic> route) => false);
+                })
+          ],
+        ),
       ),
       body: ApplicationsPg(),
     );
