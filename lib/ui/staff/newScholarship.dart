@@ -7,48 +7,6 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import 'created.dart';
 
-class NewScholarship extends StatelessWidget {
-  int scholarship_id;
-  NewScholarship({Key key, this.scholarship_id}) : super(key: key);
-
-  bool get isEditing => scholarship_id != null;
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(isEditing ? 'Edit Scholarship' : 'New Scholarship')),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: null,
-              accountEmail: null,
-            ),
-            ListTile(
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
-                      fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                          (Route<dynamic> route) => false);
-                })
-          ],
-        ),
-      ),
-      body: NewScholarshipPg(),
-    );
-  }
-}
-
 class NewScholarshipPg extends StatefulWidget {
   int scholarship_id;
   NewScholarshipPg({Key key, this.scholarship_id}) : super(key: key);
@@ -81,6 +39,8 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context)
+        .size;
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -89,6 +49,32 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
 
     return Material(
       child: Scaffold(
+        appBar: AppBar(
+            title: Text(isEditing ? 'Edit Scholarship' : 'New Scholarship')),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: null,
+                accountEmail: null,
+              ),
+              ListTile(
+                  title: Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[900],
+                        fontSize: 15),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen()),
+                            (Route<dynamic> route) => false);
+                  })
+            ],
+          ),
+        ),
         body: Container(
           height: _height,
           width: _width,

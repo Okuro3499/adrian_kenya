@@ -10,41 +10,6 @@ import '../login_screen.dart';
 import 'form.dart';
 import 'home.dart';
 
-class Available extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Available Scholarships"),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(),
-            ListTile(
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
-                      fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                      (Route<dynamic> route) => false);
-                })
-          ],
-        ),
-      ),
-      body: AvailableScholarship(),
-    );
-  }
-}
-
 class AvailableScholarship extends StatefulWidget {
   @override
   _AvailableScholarshipState createState() => _AvailableScholarshipState();
@@ -105,6 +70,30 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       onWillPop: _onWillPop,
       child: Material(
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Available Scholarships"),
+          ),
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(accountName: null, accountEmail: null,),
+                ListTile(
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[900],
+                          fontSize: 15),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => LoginScreen()),
+                              (Route<dynamic> route) => false);
+                    })
+              ],
+            ),
+          ),
           body: Container(
             height: _height,
             width: _width,

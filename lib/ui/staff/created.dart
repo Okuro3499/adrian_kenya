@@ -10,50 +10,17 @@ import '../login_screen.dart';
 import 'deleteScholarship.dart';
 import 'newScholarship.dart';
 
-class Created extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Created Scholarships"),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountEmail: null,
-              accountName: null,
-            ),
-            ListTile(
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
-                      fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                          (Route<dynamic> route) => false);
-                })
-          ],
-        ),
-      ),
-      body: CreatedPg(),
-    );
-  }
-}
-
 class CreatedPg extends StatefulWidget {
+  int scholarship_id;
+  CreatedPg({Key key, this.scholarship_id}) : super(key: key);
+
   @override
   _CreatedPgState createState() => _CreatedPgState();
 }
 
 class _CreatedPgState extends State<CreatedPg> {
+  int scholarship_id;
+
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
   List data = [];
 
@@ -61,6 +28,7 @@ class _CreatedPgState extends State<CreatedPg> {
   void initState() {
     super.initState();
     this.getJsonData();
+    scholarship_id = widget.scholarship_id;
   }
 
   Future<String> getJsonData() async {
@@ -112,6 +80,33 @@ class _CreatedPgState extends State<CreatedPg> {
       onWillPop: _onWillPop,
       child: Material(
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Created Scholarships"),
+          ),
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountEmail: null,
+                  accountName: null,
+                ),
+                ListTile(
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[900],
+                          fontSize: 15),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => LoginScreen()),
+                              (Route<dynamic> route) => false);
+                    })
+              ],
+            ),
+          ),
           body: Container(
             height: _height,
             width: _width,
@@ -141,7 +136,6 @@ class _CreatedPgState extends State<CreatedPg> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => NewScholarshipPg(
                                 scholarship_id: data[index]['pk']))).then((data) {
-
                         });
                       },
                       child: Padding(

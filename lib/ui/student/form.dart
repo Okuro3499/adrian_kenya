@@ -8,42 +8,6 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import 'availableScholarship.dart';
 
-class FormPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Form"),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-            ),
-            ListTile(
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
-                      fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                          (Route<dynamic> route) => false);
-                })
-          ],
-        ),
-      ),
-      body: FormPg(),
-    );
-  }
-}
-
 class FormPg extends StatefulWidget {
   int scholarship_id;
   FormPg({
@@ -92,6 +56,31 @@ class _FormPgState extends State<FormPg> with Validator {
 
     return Material(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Form"),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(accountEmail: null, accountName: null,
+              ),
+              ListTile(
+                  title: Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[900],
+                        fontSize: 15),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen()),
+                            (Route<dynamic> route) => false);
+                  })
+            ],
+          ),
+        ),
         body: Container(
           height: _height,
           width: _width,
