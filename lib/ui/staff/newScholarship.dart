@@ -8,18 +8,24 @@ import '../login_screen.dart';
 import 'created.dart';
 
 class NewScholarship extends StatelessWidget {
+  int scholarship_id;
+  NewScholarship({Key key, this.scholarship_id}) : super(key: key);
+
+  bool get isEditing => scholarship_id != null;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context)
         .size; //This provides the total height & width of screen
     return Scaffold(
       appBar: AppBar(
-        title: Text("New Scholarship"),
-      ),
+          title: Text(isEditing ? 'Edit Scholarship' : 'New Scholarship')),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
+              accountName: null,
+              accountEmail: null,
             ),
             ListTile(
                 title: Text(
@@ -44,22 +50,34 @@ class NewScholarship extends StatelessWidget {
 }
 
 class NewScholarshipPg extends StatefulWidget {
+  int scholarship_id;
+  NewScholarshipPg({Key key, this.scholarship_id}) : super(key: key);
+
   @override
   _NewScholarshipPgState createState() => _NewScholarshipPgState();
 }
 
 class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
+  int scholarship_id;
+
   double _height;
   double _width;
   double _pixelRatio;
   bool _large;
   bool _medium;
+  bool get isEditing => scholarship_id != null;
 
   CreateModel _scholarship;
 
   TextEditingController scholarshipNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+
   GlobalKey<FormState> globalFormKey = new GlobalKey<FormState>();
+
+  void initState() {
+    super.initState();
+    scholarship_id = widget.scholarship_id;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +86,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _large = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     _medium = ResponsiveWidget.isScreenMedium(_width, _pixelRatio);
+
     return Material(
       child: Scaffold(
         body: Container(
@@ -96,7 +115,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
       child: Row(
         children: <Widget>[
           Text(
-            "Create new Scholarship",
+            widget.scholarship_id == null ? 'New Scholarship' : 'Edit Scholarship',
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: _large ? 20 : (_medium ? 17.5 : 15),
@@ -161,8 +180,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
           hintText: "Scholarship Details",
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
-              borderSide: BorderSide.none
-          ),
+              borderSide: BorderSide.none),
         ),
         validator: validateDescription,
         onSaved: (String value) {
@@ -177,43 +195,72 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
-        if (!globalFormKey.currentState.validate()) {
-          return;
+        if (isEditing) {
+          if (!globalFormKey.currentState.validate()) {
+            return;
+          }
+          globalFormKey.currentState.save();
+
+
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text('SUCCESS'),
+                content: Text('Scholarship was edited successfully'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreatedPg();
+                          },
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ));
+        } else {
+          if (!globalFormKey.currentState.validate()) {
+            return;
+          }
+          globalFormKey.currentState.save();
+
+          final String name = scholarshipNameController.text;
+          final String description = descriptionController.text;
+
+          final CreateModel scholarship =
+          await createScholarship(name, description);
+
+          setState(() {
+            _scholarship = scholarship;
+          });
+
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text('SUCCESS'),
+                content: Text('Scholarship was created successfully'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CreatedPg();
+                          },
+                        ),
+                      );
+                    },
+                  )
+                ],
+              ));
         }
-        globalFormKey.currentState.save();
-
-        final String name = scholarshipNameController.text;
-        final String description = descriptionController.text;
-
-        final CreateModel scholarship =
-            await createScholarship(name, description);
-
-        setState(() {
-          _scholarship = scholarship;
-        });
-
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  title: Text('SUCCESS'),
-                  content: Text('Scholarship was created successfully'),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return CreatedPg();
-                            },
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                )
-        );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
@@ -228,7 +275,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
         ),
         padding: const EdgeInsets.all(12.0),
         child: Text(
-          'CREATE',
+          scholarship_id == null ? 'Create' : 'Edit',
           style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
         ),
       ),

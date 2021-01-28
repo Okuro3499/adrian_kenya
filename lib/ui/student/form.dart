@@ -302,28 +302,6 @@ class _FormPgState extends State<FormPg> with Validator {
     );
   }
 
-  // Widget educationForm() {
-  //   return Container(
-  //     margin: EdgeInsets.only(
-  //         left: _width / 12.0, right: _width / 12.0, top: _height / 15.0),
-  //     child: Form(
-  //       key: globalFormKey,
-  //       child: Column(
-  //         children: <Widget>[
-  //           schoolNameTextFormField(),
-  //           SizedBox(height: _height / 40.0),
-  //           degreeTextFormField(),
-  //           SizedBox(height: _height / 40.0),
-  //           cvTextFormField(),
-  //           SizedBox(height: _height / 40.0),
-  //           postalCodeTextFormField(),
-  //           SizedBox(height: _height / 40.0),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget schoolNameTextFormField() {
     return Material(
       borderRadius: BorderRadius.circular(30.0),

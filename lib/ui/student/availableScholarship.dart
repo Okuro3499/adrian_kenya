@@ -71,7 +71,7 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       Uri.encodeFull(url),
       headers: {
         HttpHeaders.authorizationHeader:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMjI0LCJpc19zdGFmZiI6ZmFsc2V9.Jz8Lz6C9OWGbsWPJOOcRTcnw7xIm0_-w4j7Oj-k96wM"
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MjA0LCJpc19zdGFmZiI6ZmFsc2V9.Vr9ZM9I7M6_iuhG04ztLERw1rw1ilQdThlN3piaI0mA"
       },
     );
 
