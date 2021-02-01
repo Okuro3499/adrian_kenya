@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adrian_kenya/models/SignUpModel.dart';
 import 'package:adrian_kenya/models/apply_model.dart';
 import 'package:adrian_kenya/models/create_model.dart';
 import 'package:adrian_kenya/models/login_model.dart';
+import 'package:adrian_kenya/models/update_model.dart';
+import 'package:adrian_kenya/ui/staff/newScholarship.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 Future<SignUpModel> createUser(String email, String password, String username) async {
   String apiUrl = "https://geoproserver.herokuapp.com/api/register/";
@@ -91,5 +95,48 @@ Future<ApplyModel> applyScholarship(
     return applyModelFromJson(responseString);
   } else {
     return null;
+  }
+}
+
+Future<Scholarship> updateScholarship(int scholarship_id, String name, String description) async {
+  final http.Response response = await http.put(
+    'https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/',
+      headers: {
+    HttpHeaders.authorizationHeader:
+    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
+  },
+    body: json.encode(<String, String>{
+      'name': name,
+      'description' : description
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return Scholarship.fromJson(json.decode(response.body));
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to update Scholarship');
+  }
+}
+
+Future<Scholarship> deleteScholarship(int scholarship_id) async {
+  final http.Response response = await http.delete(
+    'https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/',
+    headers: {
+      HttpHeaders.authorizationHeader:
+      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
+    });
+
+  if (response.statusCode == 204) {
+    // If the server did return a 204 OK response,
+    // then parse the JSON.
+    return (Response);
+  } else {
+    // If the server did not return a 204 OK response,
+    // then throw an exception.
+    throw Exception('Failed to delete Scholarship');
   }
 }

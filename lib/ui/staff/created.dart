@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/ui/staff/staffHome.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +12,11 @@ import 'deleteScholarship.dart';
 import 'newScholarship.dart';
 
 class CreatedPg extends StatefulWidget {
-  int scholarship_id;
-  CreatedPg({Key key, this.scholarship_id}) : super(key: key);
-
   @override
   _CreatedPgState createState() => _CreatedPgState();
 }
 
 class _CreatedPgState extends State<CreatedPg> {
-  int scholarship_id;
-
   final String url = "https://geoproserver.herokuapp.com/api/sponsorship";
   List data = [];
 
@@ -28,7 +24,6 @@ class _CreatedPgState extends State<CreatedPg> {
   void initState() {
     super.initState();
     this.getJsonData();
-    scholarship_id = widget.scholarship_id;
   }
 
   Future<String> getJsonData() async {
@@ -126,6 +121,16 @@ class _CreatedPgState extends State<CreatedPg> {
                   confirmDismiss: (direction) async {
                     final result = await showDialog(
                         context: context, builder: (_) => DeleteScholarship());
+
+                    if (result == true){
+                     final deleteResult = await deleteScholarship(data[index]['pk']);
+
+                     if(deleteResult !=null){
+                       print('deleted successfuly');
+                     } else{
+                       print('not deleted successfuly');
+                     }
+                    }
                     print(result);
                     return result;
                   },
@@ -135,8 +140,8 @@ class _CreatedPgState extends State<CreatedPg> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => NewScholarshipPg(
-                                scholarship_id: data[index]['pk']))).then((data) {
-                        });
+                                scholarship_id: data[index]['pk'])));
+                        print (data[index]['pk']);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -159,6 +164,7 @@ class _CreatedPgState extends State<CreatedPg> {
                     ),
                   ),
                 );
+
               },
               itemCount: data.length,
             ),

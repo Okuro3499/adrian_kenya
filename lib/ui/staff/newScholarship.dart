@@ -1,11 +1,29 @@
+import 'dart:convert';
+
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/create_model.dart';
+import 'package:adrian_kenya/models/update_model.dart';
 import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../login_screen.dart';
 import 'created.dart';
+
+class Scholarship {
+  final String name;
+  final String description;
+
+  Scholarship({this.name, this.description});
+
+  factory Scholarship.fromJson(Map<String, dynamic> json) {
+    return Scholarship(
+      name: json['name'],
+      description: json['description'],
+    );
+  }
+}
 
 class NewScholarshipPg extends StatefulWidget {
   int scholarship_id;
@@ -26,15 +44,36 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
   bool get isEditing => scholarship_id != null;
 
   CreateModel _scholarship;
+  UpdateModel _update;
 
   TextEditingController scholarshipNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   GlobalKey<FormState> globalFormKey = new GlobalKey<FormState>();
+  Future<Scholarship> _futureScholarship;
 
   void initState() {
     super.initState();
     scholarship_id = widget.scholarship_id;
+    if (isEditing){
+      fetchScholarship(widget.scholarship_id);
+    }
+    _futureScholarship = fetchScholarship(scholarship_id);
+  }
+
+  Future<Scholarship> fetchScholarship(int scholarship_id) async {
+    final response =
+    await http.get('https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/');
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return Scholarship.fromJson(json.decode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load Scholarship');
+    }
   }
 
   @override
@@ -139,7 +178,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
         cursorColor: Colors.blue[900],
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.title, color: Colors.blue[900], size: 20),
-          hintText: "Scholarship Title",
+          hintText: 'Scholarship Title',
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
@@ -187,6 +226,16 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
           }
           globalFormKey.currentState.save();
 
+            final String name = scholarshipNameController.text;
+            final String description = descriptionController.text;
+
+            // final UpdateModel update=
+            // await updateScholarship(widget.scholarship_id, name, description);
+
+            setState(() {
+              // _update = update;
+              _futureScholarship = updateScholarship(widget.scholarship_id, name, description);
+            });
 
           showDialog(
               context: context,
@@ -261,7 +310,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
         ),
         padding: const EdgeInsets.all(12.0),
         child: Text(
-          scholarship_id == null ? 'Create' : 'Edit',
+          widget.scholarship_id == null ? 'Create' : 'Edit',
           style: TextStyle(fontSize: _large ? 14 : (_medium ? 12 : 10)),
         ),
       ),

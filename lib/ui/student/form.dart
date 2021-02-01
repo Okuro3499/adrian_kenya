@@ -1,6 +1,5 @@
 import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/models/apply_model.dart';
-import 'package:adrian_kenya/ui/student/home.dart';
 import 'package:adrian_kenya/utils/validator.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ class FormPg extends StatefulWidget {
   int scholarship_id;
   FormPg({
     Key key,
-    this.scholarship_id,
+    this.scholarship_id
   }) : super(key: key);
   @override
   _FormPgState createState() => _FormPgState();
@@ -91,9 +90,6 @@ class _FormPgState extends State<FormPg> with Validator {
                 SizedBox(height: _height / 10),
                 personalTextRow(),
                 personalForm(),
-                // SizedBox(height: _height / 20),
-                // educationTextRow(),
-                // educationForm(),
                 SizedBox(height: _height / 20),
                 button(),
               ],
