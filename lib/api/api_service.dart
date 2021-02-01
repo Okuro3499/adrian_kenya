@@ -133,7 +133,7 @@ Future<Scholarship> deleteScholarship(int scholarship_id) async {
   if (response.statusCode == 204) {
     // If the server did return a 204 OK response,
     // then parse the JSON.
-    return (Response);
+    return Scholarship.fromJson(json.decode(response.body));
   } else {
     // If the server did not return a 204 OK response,
     // then throw an exception.
