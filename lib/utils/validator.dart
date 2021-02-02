@@ -56,7 +56,7 @@ class Validator {
     return null;
   }
   String validateDescription(String value) {
-    String pattern = r'(^[a-zA-Z ]*$)';
+    String pattern = r'(^[a-zA-Z, ]*$)';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "Description is Required";

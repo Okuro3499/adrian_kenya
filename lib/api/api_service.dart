@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adrian_kenya/models/SignUpModel.dart';
 import 'package:adrian_kenya/models/apply_model.dart';
 import 'package:adrian_kenya/models/create_model.dart';
 import 'package:adrian_kenya/models/login_model.dart';
+import 'package:adrian_kenya/models/update_model.dart';
+import 'package:adrian_kenya/ui/staff/newScholarship.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 Future<SignUpModel> createUser(String email, String password, String username) async {
   String apiUrl = "https://geoproserver.herokuapp.com/api/register/";
@@ -40,7 +44,7 @@ Future<CreateModel> createScholarship(String name, String description) async {
 
   final response = await post(apiUrl, headers: {
     HttpHeaders.authorizationHeader:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMzI3LCJpc19zdGFmZiI6dHJ1ZX0.AnatYsL31HqP-KCy01bGOwcu1nzay0-s97yIkjipQUQ"
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyNzc4MjEwLCJpc19zdGFmZiI6dHJ1ZX0.S0o4edjGUrNPUf7DDBQ5TE24JOTbBKvOzjr3ArIvDTE"
   }, body: {
     "name": name,
     "description": description
@@ -70,7 +74,7 @@ Future<ApplyModel> applyScholarship(
 
   final response = await post(apiUrl, headers: {
     HttpHeaders.authorizationHeader:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMjI0LCJpc19zdGFmZiI6ZmFsc2V9.Jz8Lz6C9OWGbsWPJOOcRTcnw7xIm0_-w4j7Oj-k96wM"
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEyNzgwMTMxLCJpc19zdGFmZiI6ZmFsc2V9.Xki-OVewv7DO94zT1EPjrWTvx-Qi6w6QUXLV7WqSk5g"
   }, body: {
     //personal
     "first_name": first_name,
@@ -91,5 +95,44 @@ Future<ApplyModel> applyScholarship(
     return applyModelFromJson(responseString);
   } else {
     return null;
+  }
+}
+
+Future<UpdateModel> updateScholarship(int scholarship_id, String name, String description) async {
+  String apiUrl = "https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/";
+
+  final response = await put(apiUrl, headers: {
+    HttpHeaders.authorizationHeader:
+    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyNzc4MjEwLCJpc19zdGFmZiI6dHJ1ZX0.S0o4edjGUrNPUf7DDBQ5TE24JOTbBKvOzjr3ArIvDTE"
+  }, body: {
+    "name": name,
+    "description": description
+  });
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return updateModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
+Future<Scholarship> deleteScholarship(int scholarship_id) async {
+  final http.Response response = await http.delete(
+    'https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/',
+    headers: {
+      HttpHeaders.authorizationHeader:
+      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyNzc4MjEwLCJpc19zdGFmZiI6dHJ1ZX0.S0o4edjGUrNPUf7DDBQ5TE24JOTbBKvOzjr3ArIvDTE"
+    });
+
+  if (response.statusCode == 204) {
+    // If the server did return a 204 OK response,
+    // then parse the JSON.
+    if(response.body.isNotEmpty){
+      json.decode(response.body);
+    }
+
+    return Scholarship.fromJson(json.decode(response.body));
+
   }
 }

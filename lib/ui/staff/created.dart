@@ -1,3 +1,4 @@
+import 'package:adrian_kenya/api/api_service.dart';
 import 'package:adrian_kenya/ui/staff/staffHome.dart';
 import 'package:adrian_kenya/widgets/responsive_ui.dart';
 import 'package:flutter/material.dart';
@@ -7,42 +8,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import '../login_screen.dart';
-
-class Created extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Created Scholarships"),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-            ),
-            ListTile(
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
-                      fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                          (Route<dynamic> route) => false);
-                })
-          ],
-        ),
-      ),
-      body: CreatedPg(),
-    );
-  }
-}
+import 'deleteScholarship.dart';
+import 'newScholarship.dart';
 
 class CreatedPg extends StatefulWidget {
   @override
@@ -64,9 +31,13 @@ class _CreatedPgState extends State<CreatedPg> {
       Uri.encodeFull(url),
       headers: {
         HttpHeaders.authorizationHeader:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMzI3LCJpc19zdGFmZiI6dHJ1ZX0.AnatYsL31HqP-KCy01bGOwcu1nzay0-s97yIkjipQUQ"
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
       },
     );
+
+    if (!mounted) {
+      return null;
+    }
 
     setState(() {
       var convertDataToJson = json.decode(response.body);
@@ -104,31 +75,95 @@ class _CreatedPgState extends State<CreatedPg> {
       onWillPop: _onWillPop,
       child: Material(
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Created Scholarships"),
+          ),
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(
+                  accountEmail: null,
+                  accountName: null,
+                ),
+                ListTile(
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[900],
+                          fontSize: 15),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => LoginScreen()),
+                              (Route<dynamic> route) => false);
+                    })
+              ],
+            ),
+          ),
           body: Container(
             height: _height,
             width: _width,
             child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          data[index]['name'],
-                          style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              itemBuilder: (context, int index) {
+                return Dismissible(
+                  key: ValueKey(data[index]['pk']),
+                  direction: DismissDirection.startToEnd,
+                  // background: Container(
+                  //   color: Colors.red,
+                  //   padding: EdgeInsets.all(16),
+                  //   child: Align(
+                  //       child: Icon(Icons.delete, color: Colors.white),
+                  //       alignment: Alignment.centerLeft),
+                  // ),
+                  onDismissed: (direction) {},
+                  confirmDismiss: (direction) async {
+                    final result = await showDialog(
+                        context: context, builder: (_) => DeleteScholarship());
+                    if (result == true){
+                     final deleteResult = await deleteScholarship(data[index]['pk']);
+
+                     if(deleteResult !=null){
+                       print('deleted successfuly');
+                     } else{
+                       print('not deleted successfuly');
+                     }
+                    }
+                    print(result);
+                    return result;
+                  },
+                  child: Card(
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => NewScholarshipPg(
+                                scholarship_id: data[index]['pk'])));
+                        print (data[index]['pk']);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              data[index]['name'],
+                              style: TextStyle(
+                                  fontSize: 22, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              data[index]['description'],
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
                         ),
-                        Text(
-                          data[index]['description'],
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 );
+
               },
               itemCount: data.length,
             ),

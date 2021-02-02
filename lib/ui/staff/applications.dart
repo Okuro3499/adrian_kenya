@@ -19,7 +19,7 @@ class Application extends StatelessWidget {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
+            UserAccountsDrawerHeader(accountEmail: null, accountName: null,
             ),
             ListTile(
                 title: Text(
@@ -61,7 +61,7 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
   Future<String> getJsonData() async {
     var response = await http.get(Uri.encodeFull(url), headers: {
       HttpHeaders.authorizationHeader:
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMzI3LCJpc19zdGFmZiI6dHJ1ZX0.AnatYsL31HqP-KCy01bGOwcu1nzay0-s97yIkjipQUQ"
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
     });
 
     setState(() {
@@ -87,6 +87,31 @@ class _ApplicationsPgState extends State<ApplicationsPg> {
 
     return Material(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Applications"),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(accountEmail: null, accountName: null,
+              ),
+              ListTile(
+                  title: Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[900],
+                        fontSize: 15),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => LoginScreen()),
+                            (Route<dynamic> route) => false);
+                  })
+            ],
+          ),
+        ),
         body: Container(
           height: _height,
           width: _width,

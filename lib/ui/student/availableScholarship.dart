@@ -10,41 +10,6 @@ import '../login_screen.dart';
 import 'form.dart';
 import 'home.dart';
 
-class Available extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context)
-        .size; //This provides the total height & width of screen
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Available Scholarships"),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(),
-            ListTile(
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
-                      fontSize: 15),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                      (Route<dynamic> route) => false);
-                })
-          ],
-        ),
-      ),
-      body: AvailableScholarship(),
-    );
-  }
-}
-
 class AvailableScholarship extends StatefulWidget {
   @override
   _AvailableScholarshipState createState() => _AvailableScholarshipState();
@@ -71,7 +36,7 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       Uri.encodeFull(url),
       headers: {
         HttpHeaders.authorizationHeader:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjExNjYwMjI0LCJpc19zdGFmZiI6ZmFsc2V9.Jz8Lz6C9OWGbsWPJOOcRTcnw7xIm0_-w4j7Oj-k96wM"
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEyNzgwMTMxLCJpc19zdGFmZiI6ZmFsc2V9.Xki-OVewv7DO94zT1EPjrWTvx-Qi6w6QUXLV7WqSk5g"
       },
     );
 
@@ -105,6 +70,30 @@ class _AvailableScholarshipState extends State<AvailableScholarship> {
       onWillPop: _onWillPop,
       child: Material(
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Available Scholarships"),
+          ),
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                UserAccountsDrawerHeader(accountName: null, accountEmail: null,),
+                ListTile(
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[900],
+                          fontSize: 15),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => LoginScreen()),
+                              (Route<dynamic> route) => false);
+                    })
+              ],
+            ),
+          ),
           body: Container(
             height: _height,
             width: _width,
