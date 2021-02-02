@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'created.dart';
+
 
 class DeleteScholarship extends StatelessWidget{
   @override
@@ -7,13 +9,20 @@ class DeleteScholarship extends StatelessWidget{
     Size size = MediaQuery.of(context)
         .size; //This provides the total height & width of screen
     return AlertDialog(
-      title: Text('Warning'),
       content: Text('Are you sure you want to delete this note?'),
       actions: <Widget>[
         FlatButton(
           child: Text('Yes'),
           onPressed: () {
             Navigator.of(context).pop(true);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return CreatedPg();
+                },
+              ),
+            );
           },
         ),
         FlatButton(

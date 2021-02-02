@@ -21,3 +21,9 @@ class UpdateModel {
 
   Map<String, dynamic> toJson() => {"name": name, "description": description};
 }
+
+
+// String scholarToJson(int scholarship_id, String name, String description) {
+//   final jsonData = scholarToJson(scholarship_id, name, description);
+//   return json.encode(jsonData);
+// }

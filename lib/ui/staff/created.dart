@@ -121,7 +121,6 @@ class _CreatedPgState extends State<CreatedPg> {
                   confirmDismiss: (direction) async {
                     final result = await showDialog(
                         context: context, builder: (_) => DeleteScholarship());
-
                     if (result == true){
                      final deleteResult = await deleteScholarship(data[index]['pk']);
 

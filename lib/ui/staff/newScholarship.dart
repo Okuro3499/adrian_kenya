@@ -41,7 +41,25 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
   double _pixelRatio;
   bool _large;
   bool _medium;
+  bool _isLoading = false;
   bool get isEditing => scholarship_id != null;
+
+  showdialog(context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              content: Row(
+                children: <Widget>[
+                  Text(isEditing ? 'updating' : 'creating'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  )
+                ],
+              ));
+        });
+  }
 
   CreateModel _scholarship;
   UpdateModel _update;
@@ -55,9 +73,6 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
   void initState() {
     super.initState();
     scholarship_id = widget.scholarship_id;
-    if (isEditing){
-      fetchScholarship(widget.scholarship_id);
-    }
     _futureScholarship = fetchScholarship(scholarship_id);
   }
 
@@ -65,7 +80,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
     final response =
     await http.get('https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/');
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       return Scholarship.fromJson(json.decode(response.body));
@@ -220,6 +235,11 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () async {
+        setState(() {
+          _isLoading = true;
+        });
+        showdialog(context);
+
         if (isEditing) {
           if (!globalFormKey.currentState.validate()) {
             return;
@@ -229,18 +249,17 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
             final String name = scholarshipNameController.text;
             final String description = descriptionController.text;
 
-            // final UpdateModel update=
-            // await updateScholarship(widget.scholarship_id, name, description);
+          final UpdateModel update =
+          await updateScholarship(widget.scholarship_id, name, description);
 
             setState(() {
-              // _update = update;
-              _futureScholarship = updateScholarship(widget.scholarship_id, name, description);
+              _update = update;
             });
 
           showDialog(
               context: context,
               builder: (_) => AlertDialog(
-                title: Text('SUCCESS'),
+                // title: Text('SUCCESS'),
                 content: Text('Scholarship was edited successfully'),
                 actions: <Widget>[
                   FlatButton(
@@ -273,6 +292,7 @@ class _NewScholarshipPgState extends State<NewScholarshipPg> with Validator {
           setState(() {
             _scholarship = scholarship;
           });
+
 
           showDialog(
               context: context,

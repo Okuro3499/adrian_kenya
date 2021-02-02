@@ -44,7 +44,7 @@ Future<CreateModel> createScholarship(String name, String description) async {
 
   final response = await post(apiUrl, headers: {
     HttpHeaders.authorizationHeader:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyNzc4MjEwLCJpc19zdGFmZiI6dHJ1ZX0.S0o4edjGUrNPUf7DDBQ5TE24JOTbBKvOzjr3ArIvDTE"
   }, body: {
     "name": name,
     "description": description
@@ -98,27 +98,22 @@ Future<ApplyModel> applyScholarship(
   }
 }
 
-Future<Scholarship> updateScholarship(int scholarship_id, String name, String description) async {
-  final http.Response response = await http.put(
-    'https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/',
-      headers: {
-    HttpHeaders.authorizationHeader:
-    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
-  },
-    body: json.encode(<String, String>{
-      'name': name,
-      'description' : description
-    }),
-  );
+Future<UpdateModel> updateScholarship(int scholarship_id, String name, String description) async {
+  String apiUrl = "https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/";
 
+  final response = await put(apiUrl, headers: {
+    HttpHeaders.authorizationHeader:
+    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyNzc4MjEwLCJpc19zdGFmZiI6dHJ1ZX0.S0o4edjGUrNPUf7DDBQ5TE24JOTbBKvOzjr3ArIvDTE"
+  }, body: {
+    "name": name,
+    "description": description
+  });
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Scholarship.fromJson(json.decode(response.body));
+    final String responseString = response.body;
+
+    return updateModelFromJson(responseString);
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to update Scholarship');
+    return null;
   }
 }
 
@@ -127,16 +122,17 @@ Future<Scholarship> deleteScholarship(int scholarship_id) async {
     'https://geoproserver.herokuapp.com/api/sponsorship/$scholarship_id/',
     headers: {
       HttpHeaders.authorizationHeader:
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyMzM5MDA0LCJpc19zdGFmZiI6dHJ1ZX0.DDgPOW2_UKeQaka645jz5vaz47-FUiztNoPACZNwSqs"
+      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMiwidXNlcm5hbWUiOiJzdGFmZiIsImVtYWlsIjoiZ2Vvc3RhZmZAZ21haWwuY29tIiwiZXhwIjoxNjEyNzc4MjEwLCJpc19zdGFmZiI6dHJ1ZX0.S0o4edjGUrNPUf7DDBQ5TE24JOTbBKvOzjr3ArIvDTE"
     });
 
   if (response.statusCode == 204) {
     // If the server did return a 204 OK response,
     // then parse the JSON.
+    if(response.body.isNotEmpty){
+      json.decode(response.body);
+    }
+
     return Scholarship.fromJson(json.decode(response.body));
-  } else {
-    // If the server did not return a 204 OK response,
-    // then throw an exception.
-    throw Exception('Failed to delete Scholarship');
+
   }
 }
