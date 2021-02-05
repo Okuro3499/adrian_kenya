@@ -74,7 +74,7 @@ Future<ApplyModel> applyScholarship(
 
   final response = await post(apiUrl, headers: {
     HttpHeaders.authorizationHeader:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEyNzgwMTMxLCJpc19zdGFmZiI6ZmFsc2V9.Xki-OVewv7DO94zT1EPjrWTvx-Qi6w6QUXLV7WqSk5g"
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOCwidXNlcm5hbWUiOiJHaWRkaWUiLCJlbWFpbCI6ImdpZGVvbm9sbG9uZGVAZ21haWwuY29tIiwiZXhwIjoxNjEzMDM0MTczLCJpc19zdGFmZiI6ZmFsc2V9.ZyBjNIgYIRRiqDhwYGDZic5C0tkm-wEsyr7L8CeWesE"
   }, body: {
     //personal
     "first_name": first_name,
